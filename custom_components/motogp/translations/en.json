@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MotoGP",
+        "description": "Track the MotoGP, Moto2 and Moto3 calendar, standings and results.",
+        "data": {
+          "classes": "Racing classes",
+          "scan_interval_hours": "Refresh interval (hours)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "MotoGP is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "MotoGP options",
+        "data": {
+          "classes": "Racing classes",
+          "scan_interval_hours": "Refresh interval (hours)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "next_event": { "name": "Next event" }
+    },
+    "calendar": {
+      "calendar": { "name": "Calendar" }
+    }
+  }
+}
