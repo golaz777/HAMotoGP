@@ -17,7 +17,7 @@ Data comes from the public (unofficial) MotoGP JSON API
 - 🏆 **Standings sensors** (per class) — championship leader with the top-5 as an attribute.
 - 🥇 **Latest result sensors** (per class) — the most recent race winner with the podium.
 
-## Installation
+Requires **Home Assistant 2024.6 or newer**.
 
 ### HACS (recommended)
 
@@ -27,8 +27,22 @@ Data comes from the public (unofficial) MotoGP JSON API
 
 ### Manual
 
-Copy `custom_components/motogp` into your Home Assistant `config/custom_components/` directory
-and restart.
+1. Copy the **`motogp`** folder so it lands at exactly:
+
+   ```
+   config/custom_components/motogp/manifest.json
+   ```
+
+   ⚠️ Copy the `custom_components/motogp` folder itself — **not** the whole repository. A
+   double-nested path like `config/custom_components/HAMotoGP/custom_components/motogp/` will
+   **not** be detected.
+2. **Fully restart** Home Assistant (Settings → System → Restart — not just "Quick reload").
+
+### Where to find it after installing
+
+This is an **integration**, so it appears under **Settings → Devices & Services →
++ Add Integration** (search "MotoGP"). It is **not** a Supervisor add-on, so it will **never**
+show up under **Settings → Add-ons / local add-ons**.
 
 ## Configuration
 
@@ -126,6 +140,21 @@ pytest
 
 Tests use recorded API fixtures in `tests/fixtures/` and
 `pytest-homeassistant-custom-component`.
+
+## Troubleshooting
+
+**"I don't see it in Home Assistant."**
+It is an integration, not an add-on — look under **Settings → Devices & Services →
++ Add Integration**, not under Add-ons / local add-ons.
+
+**"It's not in the Add Integration list."**
+- Confirm the files are at `config/custom_components/motogp/manifest.json` (no extra nesting).
+- **Fully restart** Home Assistant after copying the files.
+- Confirm you're running **Home Assistant 2024.6 or newer**.
+
+**"It appears but fails to set up."**
+Open **Settings → System → Logs** and look for a `custom_components.motogp` entry — the traceback
+there names the cause (most often an HA version below 2024.6).
 
 ## Disclaimer
 

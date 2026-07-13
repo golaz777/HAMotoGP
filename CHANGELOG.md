@@ -6,7 +6,7 @@ All notable changes to this project are documented here. The format follows
 ## [0.1.0] - 2026-07-13
 
 ### Added
-- Initial release of the MotoGP custom integration.
+- Initial release of the MotoGP custom integration. Requires Home Assistant 2024.6 or newer.
 - Config flow (UI setup) with options for racing classes (MotoGP / Moto2 / Moto3) and
   refresh interval.
 - `DataUpdateCoordinator` polling the public MotoGP JSON API.
