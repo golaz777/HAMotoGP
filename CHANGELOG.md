@@ -3,6 +3,17 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.4.0] - 2026-07-14
+
+### Changed
+- Redesigned the "Next event" card with a MotoGP-branded look. The custom
+  `motogp-next-event-card` now leads with a red gradient hero (country flag, GP name and a
+  translucent live-countdown pill over a checkered speed strip), rounder class-coloured chips,
+  red-underlined day headers, and a highlighted "NEXT" session (accent left-border + tint).
+- Refreshed the Markdown fallback card (`dashboards/next_event_card.yaml` and the copy in
+  `dashboards/motogp_dashboard.yaml`) to match: a country-flag header, upper-cased Grand Prix
+  name, a tighter meta line, and cleaner weekend-schedule tables.
+
 ## [0.3.0] - 2026-07-14
 
 ### Added

@@ -15,16 +15,23 @@ views:
           {% else %}
           {% set ci = state_attr(s, 'circuit_info') or {} %}
           {% set labels = {'MGP': '🏍️ MotoGP', 'MT2': '🏍️ Moto2', 'MT3': '🏍️ Moto3'} %}
+          {% set flags = {
+            'GB': '🇬🇧', 'ES': '🇪🇸', 'IT': '🇮🇹', 'FR': '🇫🇷', 'DE': '🇩🇪', 'NL': '🇳🇱',
+            'AT': '🇦🇹', 'PT': '🇵🇹', 'JP': '🇯🇵', 'TH': '🇹🇭', 'MY': '🇲🇾', 'AU': '🇦🇺',
+            'AR': '🇦🇷', 'US': '🇺🇸', 'QA': '🇶🇦', 'ID': '🇮🇩', 'IN': '🇮🇳', 'FI': '🇫🇮',
+            'CZ': '🇨🇿', 'HU': '🇭🇺', 'SA': '🇸🇦', 'AE': '🇦🇪', 'TR': '🇹🇷', 'BR': '🇧🇷'
+          } %}
+          {% set flag = flags.get((ci.get('country_code') or '') | upper, '🏁') %}
           {% set days = state_attr(s, 'days_until') %}
           {% if days is none %}{% set countdown = '' %}
-          {% elif days < 0 %}{% set countdown = ' · 🔴 Race weekend under way' %}
-          {% elif days == 0 %}{% set countdown = ' · 🏁 Starts today' %}
-          {% elif days == 1 %}{% set countdown = ' · 🏁 In 1 day' %}
-          {% else %}{% set countdown = ' · 🏁 In ' ~ days ~ ' days' %}{% endif %}
-          ## {{ name }}
-          📍 {{ state_attr(s, 'city') }}{% if ci.get('country') %}, {{ ci.get('country') }}{% endif %}{{ countdown }}
+          {% elif days < 0 %}{% set countdown = '🔴 Race weekend under way' %}
+          {% elif days == 0 %}{% set countdown = '🏁 Starts today' %}
+          {% elif days == 1 %}{% set countdown = '🏁 In 1 day' %}
+          {% else %}{% set countdown = '🏁 In ' ~ days ~ ' days' %}{% endif %}
+          ## {{ flag }} {{ name | upper }}
+          📍 {{ state_attr(s, 'city') }}{% if ci.get('country') %}, {{ ci.get('country') }}{% endif %}{% if countdown %} &nbsp;·&nbsp; {{ countdown }}{% endif %}
 
-          **{{ as_timestamp(state_attr(s, 'date_start')) | timestamp_custom('%a %d %b') }} – {{ as_timestamp(state_attr(s, 'date_end')) | timestamp_custom('%a %d %b') }}**
+          🗓️ **{{ as_timestamp(state_attr(s, 'date_start')) | timestamp_custom('%a %d %b') }} – {{ as_timestamp(state_attr(s, 'date_end')) | timestamp_custom('%a %d %b') }}**
 
           ### 🏟️ {{ state_attr(s, 'circuit') }}
           {% set stats = [] %}
@@ -44,10 +51,10 @@ views:
           {% set day = as_timestamp(x.start) | timestamp_custom('%A %-d %B') %}
           {% if day != ns.day %}
           {% set ns.day = day %}
-          {% set ns.lines = ns.lines + ['', '**' ~ day ~ '**', '', '| Time | Class | Session |', '|------|-------|---------|'] %}
+          {% set ns.lines = ns.lines + ['', '**' ~ day ~ '**', '', '| Time | Class | Session |', '|:----:|:------|:--------|'] %}
           {% endif %}
           {% set marker = '🏁 ' if x.kind == 'RACE' else ('⚡ ' if x.kind == 'SPRINT' else '') %}
-          {% set ns.lines = ns.lines + ['| ' ~ (as_timestamp(x.start) | timestamp_custom('%H:%M')) ~ ' | ' ~ labels.get(x['class'], x['class']) ~ ' | ' ~ marker ~ x.session ~ ' |'] %}
+          {% set ns.lines = ns.lines + ['| `' ~ (as_timestamp(x.start) | timestamp_custom('%H:%M')) ~ '` | ' ~ labels.get(x['class'], x['class']) ~ ' | ' ~ marker ~ x.session ~ ' |'] %}
           {% endfor %}
           {{ ns.lines | join('\n') }}
           {% else %}

@@ -64,7 +64,7 @@ export class MotoGPNextEventCard extends LitElement {
     if (!this._config || !this.hass) return nothing;
     const ent = this.hass.states[this._config.entity ?? "sensor.motogp_next_event"];
     if (!ent || ent.state === "unavailable" || ent.state === "unknown") {
-      return html`<ha-card><div class="empty">MotoGP next-event sensor unavailable.</div></ha-card>`;
+      return html`<ha-card><div class="body"><div class="empty">MotoGP next-event sensor unavailable.</div></div></ha-card>`;
     }
     const a = ent.attributes;
     const ci = a.circuit_info ?? {};
@@ -82,41 +82,46 @@ export class MotoGPNextEventCard extends LitElement {
     let flatIdx = 0;
 
     return html`
-      <ha-card>
+      <ha-card class="event">
         ${this._config.title ? html`<div class="title">${this._config.title}</div>` : nothing}
-        <div class="header">
+        <div class="hero">
           <span class="flag">${flagEmoji(ci.country_code)}</span>
-          <span class="title">${name}</span>
+          <span class="hero-name">${name}</span>
           ${countdown ? html`<span class="countdown">${countdown}</span>` : nothing}
         </div>
-        <div class="sub">
-          ${a.circuit ?? ""}${a.city ? `, ${a.city}` : ""}
+        <div class="body">
+          <div class="sub">
+            📍 ${a.circuit ?? ""}${a.city ? `, ${a.city}` : ""}
+          </div>
+          ${this._config.show_circuit !== false ? this._circuit(ci) : nothing}
+          ${schedule.length === 0
+            ? html`<div class="empty">Schedule not available yet.</div>`
+            : groups.map(
+                (g) => html`
+                  <div class="day">${g.label}</div>
+                  ${g.items.map((s) => {
+                    const isNext = flatIdx++ === nextIdx;
+                    return html`
+                      <div class="row ${isNext ? "next" : ""}">
+                        <span class="time">
+                          ${new Date(s.start).toLocaleTimeString(
+                            this.hass!.locale?.language,
+                            { hour: "2-digit", minute: "2-digit" },
+                          )}
+                        </span>
+                        <span class="chip" style="background:${CLASS_COLORS[s.class]}"
+                          >${s.class}</span
+                        >
+                        <span class="session">
+                          ${KIND_MARK[s.kind] ?? ""} ${s.session}
+                          ${isNext ? html`<span class="next-tag">NEXT</span>` : nothing}
+                        </span>
+                      </div>
+                    `;
+                  })}
+                `,
+              )}
         </div>
-        ${this._config.show_circuit !== false ? this._circuit(ci) : nothing}
-        ${schedule.length === 0
-          ? html`<div class="empty">Schedule not available yet.</div>`
-          : groups.map(
-              (g) => html`
-                <div class="day">${g.label}</div>
-                ${g.items.map((s) => {
-                  const isNext = flatIdx++ === nextIdx;
-                  return html`
-                    <div class="row ${isNext ? "next" : ""}">
-                      <span class="time">
-                        ${new Date(s.start).toLocaleTimeString(
-                          this.hass!.locale?.language,
-                          { hour: "2-digit", minute: "2-digit" },
-                        )}
-                      </span>
-                      <span class="chip" style="background:${CLASS_COLORS[s.class]}"
-                        >${s.class}</span
-                      >
-                      <span class="session">${KIND_MARK[s.kind] ?? ""} ${s.session}</span>
-                    </div>
-                  `;
-                })}
-              `,
-            )}
       </ha-card>
     `;
   }
