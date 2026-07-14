@@ -9,6 +9,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import MotoGPApiClient
 from .coordinator import MotoGPDataUpdateCoordinator
+from .frontend_registration import async_register_frontend
 
 PLATFORMS: list[Platform] = [Platform.CALENDAR, Platform.SENSOR]
 
@@ -17,6 +18,7 @@ type MotoGPConfigEntry = ConfigEntry[MotoGPDataUpdateCoordinator]
 
 async def async_setup_entry(hass: HomeAssistant, entry: MotoGPConfigEntry) -> bool:
     """Set up MotoGP from a config entry."""
+    await async_register_frontend(hass)
     session = async_get_clientsession(hass)
     client = MotoGPApiClient(session)
     coordinator = MotoGPDataUpdateCoordinator(hass, entry, client)
