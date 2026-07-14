@@ -35,6 +35,7 @@ def mock_client() -> AsyncMock:
     finished = load_fixture("finished_events.json")
     sessions = load_fixture("sessions.json")
     classification = load_fixture("classification.json")["classification"]
+    riders = load_fixture("riders.json")
 
     client = AsyncMock()
     client.async_get_seasons.return_value = seasons
@@ -47,4 +48,11 @@ def mock_client() -> AsyncMock:
     client.async_get_finished_events.return_value = finished
     client.async_get_sessions.return_value = sessions
     client.async_get_classification.return_value = classification
+
+    riders_by_id = {r["id"]: r for r in riders}
+
+    async def _get_rider(rider_uuid: str) -> dict:
+        return riders_by_id.get(rider_uuid, {})
+
+    client.async_get_rider.side_effect = _get_rider
     return client

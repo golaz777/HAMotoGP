@@ -64,8 +64,8 @@ want fresher session data.
 |--------|---------------|----------------|
 | `calendar.motogp_calendar` | on/off | current/next round summary, location |
 | `sensor.motogp_next_event` | round start timestamp | `circuit`, `city`, `country`, `days_until`, `schedule`, `circuit_info` (length, corners, longest straight, designer, …) |
-| `sensor.motogp_<class>_standings` | leader name | `leader_points`, `standings` (top 5) |
-| `sensor.motogp_<class>_latest_result` | winner name | `event`, `date`, `podium` |
+| `sensor.motogp_<class>_standings` | leader name | `leader_points`, `standings` (top 5, each with rider `number` and `photo`) |
+| `sensor.motogp_<class>_latest_result` | winner name | `event`, `date`, `weather`, `podium`, `results` (full field, each with `time`, `gap`, `average_speed`, `status`, `constructor`, `photo`) |
 
 ## Dashboard
 
@@ -110,7 +110,8 @@ resource setup:
 - **MotoGP Next Event** (`motogp-next-event-card`) — circuit stats, the track layout map, a live
   countdown, and the weekend schedule with colored class chips. A "Classes" selector in the
   visual editor limits the schedule to MotoGP, Moto2 or Moto3 only, or shows all three.
-- **MotoGP Results** (`motogp-results-card`) — per-class standings and the latest podium.
+- **MotoGP Results** (`motogp-results-card`) — per-class standings and the latest podium, with
+  rider photos, per-rider gap/time and average speed, and the race-day weather.
 
 Add them from **Dashboard → Edit → + Add Card** (search "MotoGP") and configure in the visual
 editor. Requires Home Assistant 2024.7+. The Markdown cards above remain available as a

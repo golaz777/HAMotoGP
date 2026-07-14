@@ -18,6 +18,7 @@ EP_STANDINGS: Final = "/results/standings"  # ?seasonUuid=...&categoryUuid=...
 EP_RESULT_EVENTS: Final = "/results/events"  # ?seasonUuid=...&isFinished=true
 EP_SESSIONS: Final = "/results/sessions"  # ?eventUuid=...&categoryUuid=...
 EP_CLASSIFICATION: Final = "/results/session/{session_id}/classification"
+EP_RIDERS: Final = "/riders"  # rider profiles incl. pictures.profile.main
 
 # Config / options keys.
 CONF_CLASSES: Final = "classes"

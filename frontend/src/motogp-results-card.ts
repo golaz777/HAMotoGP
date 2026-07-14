@@ -11,6 +11,26 @@ const CLASS_LABELS: Record<ClassKey, string> = {
 };
 const MEDALS: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
 
+// Map the API weather string to an emoji; default to a neutral cloud.
+function weatherEmoji(weather?: string): string {
+  const w = (weather ?? "").toLowerCase();
+  if (w.includes("rain") || w.includes("wet")) return "🌧️";
+  if (w.includes("storm") || w.includes("thunder")) return "⛈️";
+  if (w.includes("partly")) return "⛅";
+  if (w.includes("cloud") || w.includes("overcast")) return "☁️";
+  if (w.includes("sun") || w.includes("clear") || w.includes("fair")) return "☀️";
+  return "🌡️";
+}
+
+// Winner shows total time; others show the gap to the leader.
+function resultMeta(r: any): string {
+  const parts: string[] = [];
+  if (r.position === 1 && r.time) parts.push(r.time);
+  else if (r.gap && r.gap !== "0.000") parts.push(`+${r.gap}s`);
+  if (r.average_speed) parts.push(`${r.average_speed} km/h`);
+  return parts.join(" · ");
+}
+
 @customElement("motogp-results-card")
 export class MotoGPResultsCard extends LitElement {
   static styles = cardStyles;
@@ -34,6 +54,7 @@ export class MotoGPResultsCard extends LitElement {
       classes: ["motogp", "moto2", "moto3"],
       show_standings: true,
       show_podium: true,
+      show_weather: true,
       default_class: "motogp",
       ...config,
     };
@@ -74,7 +95,12 @@ export class MotoGPResultsCard extends LitElement {
         ${rows.map(
           (r: any) => html`<tr>
             <td>${r.position}</td>
-            <td>${r.rider}</td>
+            <td class="rider-cell">
+              ${r.photo
+                ? html`<img class="rider-photo" src=${r.photo} alt="" loading="lazy" />`
+                : nothing}
+              <span>${r.rider}</span>
+            </td>
             <td class="pts"><strong>${r.points}</strong></td>
           </tr>`,
         )}
@@ -87,14 +113,28 @@ export class MotoGPResultsCard extends LitElement {
     const res = ent?.attributes;
     const podium = res?.podium ?? [];
     if (podium.length === 0) return nothing;
+    const weather = res.weather;
     return html`
       <div class="day">${res.event ?? "Latest result"}</div>
+      ${this._config.show_weather !== false && weather
+        ? html`<div class="weather">
+            ${weatherEmoji(weather.weather)} ${weather.weather ?? ""}
+            ${weather.track ? html`· Track ${weather.track}` : nothing}
+            ${weather.air ? html`· Air ${weather.air}` : nothing}
+            ${weather.ground ? html`· Ground ${weather.ground}` : nothing}
+          </div>`
+        : nothing}
       ${podium.map(
         (r: any) => html`<div class="podium-row">
           <span class="swatch" style="background:${colorForTeam(r.team, this._config.team_colors)}"></span>
           <span>${MEDALS[r.position] ?? r.position}</span>
+          ${r.photo
+            ? html`<img class="rider-photo" src=${r.photo} alt="" loading="lazy" />`
+            : nothing}
           <strong>${r.rider}</strong>
-          <span class="sub">${r.team ?? ""}</span>
+          <span class="sub">
+            ${r.team ?? ""}${resultMeta(r) ? html` — ${resultMeta(r)}` : nothing}
+          </span>
         </div>`,
       )}
     `;

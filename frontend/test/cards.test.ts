@@ -103,12 +103,19 @@ describe("motogp-results-card", () => {
         "sensor.motogp_motogp_standings": {
           entity_id: "sensor.motogp_motogp_standings",
           state: "Jorge Martin",
-          attributes: { standings: [ { position: 1, rider: "Jorge Martin", team: "Aprilia Racing", points: 208 } ] },
+          attributes: { standings: [ { position: 1, rider: "Jorge Martin", team: "Aprilia Racing", points: 208, number: 89, photo: "https://photos.motogp.com/jm89.png" } ] },
         },
         "sensor.motogp_motogp_latest_result": {
           entity_id: "sensor.motogp_motogp_latest_result",
           state: "Marc Marquez",
-          attributes: { event: "GERMAN GP", podium: [ { position: 1, rider: "Marc Marquez", team: "Ducati Lenovo", points: 25 } ] },
+          attributes: {
+            event: "GERMAN GP",
+            weather: { track: "Dry", air: "28º", ground: "42º", humidity: "40%", weather: "Partly-Cloudy" },
+            podium: [
+              { position: 1, rider: "Marc Marquez", team: "Ducati Lenovo", points: 25, time: "40:53.148", average_speed: 161.6, photo: "https://photos.motogp.com/mm93.png" },
+              { position: 2, rider: "Ai Ogura", team: "Trackhouse", points: 20, gap: "2.868", average_speed: 161.2 },
+            ],
+          },
         },
       },
       locale: { language: "en" },
@@ -129,6 +136,23 @@ describe("motogp-results-card", () => {
     expect(text).toContain("Jorge Martin");
     expect(text).toContain("Marc Marquez");
     expect(text).toContain("GERMAN GP");
+    // Rider photos rendered (standings leader + podium winner).
+    const photos = el.shadowRoot!.querySelectorAll("img.rider-photo");
+    expect(photos.length).toBeGreaterThanOrEqual(2);
+    // Weather strip and result meta (gap / winner time).
+    expect(text).toContain("Partly-Cloudy");
+    expect(text).toContain("+2.868s");
+    expect(text).toContain("40:53.148");
+    el.remove();
+  });
+
+  it("hides the weather strip when show_weather is false", async () => {
+    const el = document.createElement("motogp-results-card") as any;
+    el.setConfig({ type: "custom:motogp-results-card", show_weather: false });
+    el.hass = hassWithResults();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector(".weather")).toBeNull();
     el.remove();
   });
 });

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import datetime, timedelta
 from typing import Any
@@ -62,6 +63,9 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         """Initialise the coordinator from a config entry."""
         self.entry = entry
         self.client = client
+        # Rider portraits rarely change; cache per uuid across refreshes.
+        # A value of ``None`` records "looked up, no photo" to avoid refetching.
+        self._rider_photos: dict[str, str | None] = {}
         hours = entry.options.get(
             CONF_SCAN_INTERVAL_HOURS, DEFAULT_SCAN_INTERVAL_HOURS
         )
@@ -97,6 +101,7 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             latest_result = await self._fetch_latest_results(
                 season_uuid, category_map
             )
+            await self._attach_rider_photos(standings, latest_result)
         except MotoGPApiError as err:
             raise UpdateFailed(str(err)) from err
 
@@ -240,6 +245,89 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 mapping[class_key] = category_id
         return mapping
 
+    @staticmethod
+    def _rider_uuid(rider: dict[str, Any]) -> str | None:
+        """The rider id the results/standings feed uses to join to ``/riders``."""
+        return rider.get("riders_api_uuid") or rider.get("riders_id")
+
+    @classmethod
+    def _reduce_classification_row(cls, r: dict[str, Any]) -> dict[str, Any]:
+        """Reduce one race-classification row to the fields the entities expose.
+
+        ``photo`` is filled in later by :meth:`_attach_rider_photos`.
+        """
+        rider = r.get("rider") or {}
+        return {
+            "position": r.get("position"),
+            "rider": rider.get("full_name"),
+            "number": rider.get("number"),
+            "team": (r.get("team") or {}).get("name"),
+            "constructor": (r.get("constructor") or {}).get("name"),
+            "points": r.get("points"),
+            "time": r.get("time"),
+            "gap": (r.get("gap") or {}).get("first"),
+            "average_speed": r.get("average_speed"),
+            "status": r.get("status"),
+            "rider_uuid": cls._rider_uuid(rider),
+            "photo": None,
+        }
+
+    async def _attach_rider_photos(
+        self,
+        standings: dict[str, list[dict[str, Any]]],
+        latest_result: dict[str, dict[str, Any] | None],
+    ) -> None:
+        """Fill each row's ``photo`` from ``/riders/{uuid}`` (cached, best-effort).
+
+        The bulk ``/riders`` list omits pictures, so portraits are fetched per
+        rider. Results are cached across refreshes; a fetch failure leaves the
+        photo as ``None`` without failing the update.
+        """
+        rows: list[dict[str, Any]] = []
+        for class_rows in standings.values():
+            rows.extend(class_rows)
+        for result in latest_result.values():
+            if result:
+                rows.extend(result["results"])
+
+        # Unique uuids we have not looked up yet.
+        pending = {
+            uuid
+            for row in rows
+            if (uuid := row.get("rider_uuid")) and uuid not in self._rider_photos
+        }
+        if pending:
+            uuids = list(pending)
+            fetched = await asyncio.gather(
+                *(self._fetch_rider_photo(u) for u in uuids),
+                return_exceptions=True,
+            )
+            for uuid, photo in zip(uuids, fetched):
+                self._rider_photos[uuid] = (
+                    None if isinstance(photo, Exception) else photo
+                )
+
+        for row in rows:
+            uuid = row.get("rider_uuid")
+            if uuid:
+                row["photo"] = self._rider_photos.get(uuid)
+
+    async def _fetch_rider_photo(self, rider_uuid: str) -> str | None:
+        """Return a rider's portrait URL, or ``None`` if unavailable.
+
+        The portrait lives on the rider's *current* career entry
+        (``career[].pictures.profile.main``); the top-level ``pictures`` is null.
+        """
+        try:
+            rider = await self.client.async_get_rider(rider_uuid)
+        except MotoGPApiError:
+            return None
+        career = rider.get("career") or []
+        current = next((e for e in career if e.get("current")), None)
+        if current is None and career:
+            current = max(career, key=lambda e: e.get("season") or 0)
+        return ((current or {}).get("pictures") or {}).get("profile", {}).get("main")
+
     async def _fetch_standings(
         self, season_uuid: str, category_map: dict[str, str]
     ) -> dict[str, list[dict[str, Any]]]:
@@ -251,8 +339,11 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 {
                     "position": r.get("position"),
                     "rider": (r.get("rider") or {}).get("full_name"),
+                    "number": (r.get("rider") or {}).get("number"),
                     "team": (r.get("team") or {}).get("name"),
                     "points": r.get("points"),
+                    "rider_uuid": self._rider_uuid(r.get("rider") or {}),
+                    "photo": None,
                 }
                 for r in rows[:TOP_N]
             ]
@@ -261,7 +352,7 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     async def _fetch_latest_results(
         self, season_uuid: str, category_map: dict[str, str]
     ) -> dict[str, dict[str, Any] | None]:
-        """Fetch the latest race podium per selected class."""
+        """Fetch the latest race result per selected class."""
         finished = await self.client.async_get_finished_events(season_uuid)
         # Newest real (non-test) round first.
         races = [e for e in finished if not e.get("test")]
@@ -290,19 +381,13 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             rows = await self.client.async_get_classification(race_session["id"])
             if not rows:
                 continue
-            podium = [
-                {
-                    "position": r.get("position"),
-                    "rider": (r.get("rider") or {}).get("full_name"),
-                    "team": (r.get("team") or {}).get("name"),
-                    "points": r.get("points"),
-                }
-                for r in rows[:3]
-            ]
+            results = [self._reduce_classification_row(r) for r in rows]
             return {
                 "event": (event.get("name") or "").strip(),
                 "date": event.get("date_end"),
                 "circuit": (event.get("circuit") or {}).get("name"),
-                "podium": podium,
+                "weather": race_session.get("condition"),
+                "podium": results[:3],
+                "results": results,
             }
         return None

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "23e50438-a657-4fb0-a190-3262b5472f29",
+    "legacy_id": 7444,
+    "name": "Marc",
+    "surname": "Marquez",
+    "pictures": null,
+    "career": [
+      {
+        "season": 2025,
+        "current": false,
+        "pictures": { "profile": { "main": "https://photos.motogp.com/riders/2/3/23e50438-a657-4fb0-a190-3262b5472f29/2025/profile/main-000000.png" } }
+      },
+      {
+        "season": 2026,
+        "current": true,
+        "number": 93,
+        "pictures": { "profile": { "main": "https://photos.motogp.com/riders/2/3/23e50438-a657-4fb0-a190-3262b5472f29/2026/profile/main-129758.png", "secondary": null } }
+      }
+    ]
+  },
+  {
+    "id": "244b6f51-ac33-40ee-876d-9401dc9d1346",
+    "legacy_id": 12345,
+    "name": "Ai",
+    "surname": "Ogura",
+    "pictures": null,
+    "career": [
+      {
+        "season": 2026,
+        "current": true,
+        "number": 79,
+        "pictures": { "profile": { "main": "https://photos.motogp.com/riders/2/4/244b6f51-ac33-40ee-876d-9401dc9d1346/2026/profile/main-768086.png" } }
+      }
+    ]
+  },
+  {
+    "id": "5b9af34e-da94-4ca2-9c4c-6be0fc8b1bbc",
+    "legacy_id": 8888,
+    "name": "Jorge",
+    "surname": "Martin",
+    "pictures": null,
+    "career": [
+      {
+        "season": 2026,
+        "current": true,
+        "number": 89,
+        "pictures": { "profile": { "main": "https://photos.motogp.com/riders/5/b/5b9af34e-da94-4ca2-9c4c-6be0fc8b1bbc/2026/profile/main-200002.png" } }
+      }
+    ]
+  },
+  {
+    "id": "eec1f7dc-b115-44f6-82aa-73130e5c92cf",
+    "legacy_id": 9999,
+    "name": "Raul",
+    "surname": "Fernandez",
+    "pictures": null,
+    "career": [
+      {
+        "season": 2026,
+        "current": true,
+        "number": 25,
+        "pictures": { "profile": { "main": null, "secondary": null } }
+      }
+    ]
+  }
+]

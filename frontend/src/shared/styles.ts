@@ -162,6 +162,21 @@ export const cardStyles = css`
   table.standings td.pts, table.standings th.pts { text-align: right; }
   .podium-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
   .swatch { width: 4px; height: 1.2em; border-radius: 2px; }
+  .rider-cell { display: flex; align-items: center; gap: 8px; }
+  .rider-photo {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    background: var(--secondary-background-color);
+    flex: 0 0 auto;
+  }
+  .weather {
+    color: var(--secondary-text-color);
+    font-size: 0.85rem;
+    margin: 2px 0 8px;
+  }
   .tabs { display: flex; gap: 6px; margin: 8px 0; }
   .tab {
     cursor: pointer; padding: 4px 10px; border-radius: 14px;

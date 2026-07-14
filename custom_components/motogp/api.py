@@ -14,6 +14,7 @@ from .const import (
     EP_CLASSIFICATION,
     EP_EVENTS,
     EP_RESULT_EVENTS,
+    EP_RIDERS,
     EP_SEASONS,
     EP_SESSIONS,
     EP_STANDINGS,
@@ -65,6 +66,15 @@ class MotoGPApiClient:
         """Return the broadcast events (with nested sessions) for a season year."""
         data = await self._get(EP_EVENTS, {"seasonYear": season_year})
         return data if isinstance(data, list) else []
+
+    async def async_get_rider(self, rider_uuid: str) -> dict[str, Any]:
+        """Return a single rider profile (incl. portrait pictures).
+
+        The bulk ``/riders`` list omits pictures, so photos must be fetched
+        per rider from ``/riders/{uuid}``.
+        """
+        data = await self._get(f"{EP_RIDERS}/{rider_uuid}")
+        return data if isinstance(data, dict) else {}
 
     async def async_get_categories(self, season_uuid: str) -> list[dict[str, Any]]:
         """Return the racing categories available for a season."""

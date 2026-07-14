@@ -46,6 +46,11 @@ export class ResultsCardEditor extends LitElement {
             @change=${(e: Event) => this._emit({ show_podium: (e.target as HTMLInputElement).checked })} />
           Show latest podium
         </label>
+        <label>
+          <input type="checkbox" .checked=${this._config.show_weather !== false}
+            @change=${(e: Event) => this._emit({ show_weather: (e.target as HTMLInputElement).checked })} />
+          Show race weather
+        </label>
       </div>
     `;
   }

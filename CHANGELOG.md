@@ -3,6 +3,21 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.6.0] - 2026-07-14
+
+### Added
+- **Live race weather.** The latest-result sensors now expose a `weather` attribute (track/air/
+  ground/humidity/condition) captured from the most recent finished race session. The Results card
+  shows it as a weather strip under the event title, toggled by a new `show_weather` option.
+  (Note: this is the last race's weather — the API provides no forecast for upcoming events.)
+- **Richer race results.** Each result row now carries `time`, `gap`, `average_speed`, `status`,
+  `constructor` and rider `number`, and the latest-result sensors expose the full field as a new
+  `results` attribute (not just the top-3 `podium`). The Results card shows the winner's time and
+  each rider's gap and average speed.
+- **Rider photos.** A new `/riders` endpoint is queried to build a portrait lookup; standings and
+  podium rows now include a `photo` URL and the Results card renders round rider avatars. Rider
+  photos are optional — a `/riders` failure degrades gracefully with no photos.
+
 ## [0.5.2] - 2026-07-14
 
 ### Added

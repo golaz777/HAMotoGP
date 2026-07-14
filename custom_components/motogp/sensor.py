@@ -164,5 +164,7 @@ class MotoGPLatestResultSensor(MotoGPEntity, SensorEntity):
             "event": result["event"],
             "date": result["date"],
             "circuit": result["circuit"],
+            "weather": result.get("weather"),
             "podium": result["podium"],
+            "results": result.get("results", result["podium"]),
         }

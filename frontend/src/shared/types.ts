@@ -36,6 +36,7 @@ export interface ResultsCardConfig {
   classes?: ClassKey[];
   show_standings?: boolean;
   show_podium?: boolean;
+  show_weather?: boolean;
   default_class?: ClassKey;
   team_colors?: Record<string, string>;
 }

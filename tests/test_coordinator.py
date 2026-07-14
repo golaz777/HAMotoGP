@@ -12,6 +12,7 @@ from custom_components.motogp.const import (
     CONF_SCAN_INTERVAL_HOURS,
     DEFAULT_CLASSES,
 )
+from custom_components.motogp.api import MotoGPApiError
 from custom_components.motogp.coordinator import MotoGPDataUpdateCoordinator
 
 
@@ -106,17 +107,50 @@ async def test_standings_parsed_top_n(hass: HomeAssistant, mock_client) -> None:
     assert motogp[0]["position"] == 1
     assert motogp[0]["rider"]
     assert len(motogp) <= 5
+    # Enrichment: rider number and (joined) portrait photo.
+    assert motogp[0]["number"] is not None
+    # Jorge Martin (leader) has a portrait in the riders fixture.
+    assert motogp[0]["photo"].startswith("https://photos.motogp.com/")
 
 
 async def test_latest_result_has_podium(hass: HomeAssistant, mock_client) -> None:
-    """Latest result should return a three-rider podium."""
+    """Latest result should return an enriched podium and full field."""
     coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)
     data = await coordinator._async_update_data()
 
     result = data["latest_result"]["motogp"]
     assert result is not None
     assert len(result["podium"]) == 3
-    assert result["podium"][0]["position"] == 1
+    winner = result["podium"][0]
+    assert winner["position"] == 1
+    # Richer result fields.
+    assert winner["time"]
+    assert winner["average_speed"] is not None
+    assert winner["status"]
+    assert "gap" in winner
+    assert winner["constructor"] is not None
+    # Full field is exposed, not just the podium.
+    assert len(result["results"]) > 3
+    # Live weather from the race session.
+    assert isinstance(result["weather"], dict)
+    assert "weather" in result["weather"]
+    # Photo join: Marc Marquez (winner) matched; Raul Fernandez has a null photo.
+    assert winner["photo"].startswith("https://photos.motogp.com/")
+    raul = next(r for r in result["results"] if r["rider"] == "Raul Fernandez")
+    assert raul["photo"] is None
+
+
+async def test_rider_photos_degrade_gracefully(
+    hass: HomeAssistant, mock_client
+) -> None:
+    """A failing riders endpoint leaves photos None, not a crash."""
+    mock_client.async_get_rider.side_effect = MotoGPApiError("boom")
+    coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)
+
+    # The whole update still succeeds; rows just carry no photo.
+    data = await coordinator._async_update_data()
+    assert data["standings"]["motogp"][0]["photo"] is None
+    assert data["latest_result"]["motogp"]["podium"][0]["photo"] is None
 
 
 async def test_selected_classes_filtering(hass: HomeAssistant, mock_client) -> None:
