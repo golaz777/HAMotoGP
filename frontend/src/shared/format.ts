@@ -50,11 +50,13 @@ export function filterByClasses(
 export function groupScheduleByDay(
   schedule: ScheduleItem[],
   locale = "en",
+  timeZone?: string,
 ): DayGroup[] {
   const fmt = new Intl.DateTimeFormat(locale, {
     weekday: "long",
     day: "numeric",
     month: "long",
+    ...(timeZone ? { timeZone } : {}),
   });
   const groups: DayGroup[] = [];
   let current: DayGroup | undefined;

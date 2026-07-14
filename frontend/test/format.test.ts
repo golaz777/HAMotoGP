@@ -49,7 +49,7 @@ describe("filterByClasses", () => {
 
 describe("groupScheduleByDay", () => {
   it("groups into three days preserving order", () => {
-    const groups = groupScheduleByDay(schedule as any);
+    const groups = groupScheduleByDay(schedule as any, "en", "UTC");
     expect(groups).toHaveLength(3);
     expect(groups[0].items).toHaveLength(1);
     expect(groups[1].items).toHaveLength(2);
