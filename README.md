@@ -108,7 +108,8 @@ Installing the integration also registers two custom Lovelace cards automaticall
 resource setup:
 
 - **MotoGP Next Event** (`motogp-next-event-card`) — circuit stats, the track layout map, a live
-  countdown, and the weekend schedule with colored class chips.
+  countdown, and the weekend schedule with colored class chips. A "Classes" selector in the
+  visual editor limits the schedule to MotoGP, Moto2 or Moto3 only, or shows all three.
 - **MotoGP Results** (`motogp-results-card`) — per-class standings and the latest podium.
 
 Add them from **Dashboard → Edit → + Add Card** (search "MotoGP") and configure in the visual

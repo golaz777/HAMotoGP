@@ -3,6 +3,14 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.5.2] - 2026-07-14
+
+### Added
+- **Class selector on the "Next event" card.** A "Classes" dropdown in the
+  `motogp-next-event-card` visual editor limits the weekend schedule to a single class — MotoGP,
+  Moto2 or Moto3 — or shows all three. Backed by the existing `classes` config option, so
+  multi-class YAML configs (e.g. `classes: [MGP, MT2]`) keep working.
+
 ## [0.5.1] - 2026-07-14
 
 ### Added

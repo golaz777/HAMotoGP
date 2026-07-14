@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import type { HomeAssistant, NextEventCardConfig } from "../shared/types";
+import type { HomeAssistant, NextEventCardConfig, ClassAcronym } from "../shared/types";
 
 @customElement("motogp-next-event-card-editor")
 export class NextEventCardEditor extends LitElement {
@@ -9,6 +9,11 @@ export class NextEventCardEditor extends LitElement {
 
   setConfig(config: NextEventCardConfig) {
     this._config = config;
+  }
+
+  private _selectedClass(): "all" | ClassAcronym {
+    const c = this._config.classes;
+    return c && c.length === 1 ? (c[0] as ClassAcronym) : "all";
   }
 
   private _emit(patch: Partial<NextEventCardConfig>) {
@@ -35,6 +40,21 @@ export class NextEventCardEditor extends LitElement {
             .value=${this._config.title ?? ""}
             @change=${(e: Event) => this._emit({ title: (e.target as HTMLInputElement).value || undefined })}
           />
+        </label>
+        <label>
+          Classes
+          <select
+            .value=${this._selectedClass()}
+            @change=${(e: Event) => {
+              const v = (e.target as HTMLSelectElement).value;
+              this._emit({ classes: v === "all" ? undefined : [v as ClassAcronym] });
+            }}
+          >
+            <option value="all">All classes</option>
+            <option value="MGP">MotoGP only</option>
+            <option value="MT2">Moto2 only</option>
+            <option value="MT3">Moto3 only</option>
+          </select>
         </label>
         <label>
           <input type="checkbox" .checked=${this._config.show_circuit !== false}
