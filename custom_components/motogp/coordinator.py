@@ -153,6 +153,10 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         width_units = track.get("width_units") or {}
         straight_units = track.get("longest_straight_units") or {}
 
+        assets = track.get("assets") or {}
+        info = assets.get("info") or {}
+        simple = assets.get("simple") or {}
+
         left = _to_int(track.get("left_corners"))
         right = _to_int(track.get("right_corners"))
         corners = left + right if left is not None and right is not None else None
@@ -178,6 +182,9 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             "left_corners": left,
             "right_corners": right,
             "corners": corners,
+            # Track layout artwork from the API (both optional).
+            "track_map": info.get("path"),  # detailed SVG (numbered corners/sectors)
+            "track_map_simple": simple.get("path"),  # plain PNG silhouette
         }
 
     @staticmethod

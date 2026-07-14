@@ -73,8 +73,9 @@ Two ready-to-paste layouts are provided in [`dashboards/`](dashboards/), built w
 **built-in cards** (no custom frontend resources / HACS cards required):
 
 - [`next_event_card.yaml`](dashboards/next_event_card.yaml) — the **"Next event" card**: the
-  upcoming round's **circuit data** (track length, corners, longest straight, designer, …) and
-  the **complete weekend schedule for all three classes** as a chronological, day-by-day table.
+  upcoming round's **circuit data** (track length, corners, longest straight, designer, …), the
+  **track layout map** (`circuit_info.track_map`), and the **complete weekend schedule for all
+  three classes** as a chronological, day-by-day table.
   Reads the `circuit_info` and `schedule` attributes of `sensor.motogp_next_event`.
 - [`motogp_dashboard.yaml`](dashboards/motogp_dashboard.yaml) — a **complete single-view
   dashboard**: the next-event card plus per-class championship standings, the latest podium and
@@ -106,8 +107,8 @@ Verify in **Developer Tools → States** (filter `sensor.motogp_next_event`), an
 Installing the integration also registers two custom Lovelace cards automatically — no manual
 resource setup:
 
-- **MotoGP Next Event** (`motogp-next-event-card`) — circuit stats, a live countdown, and the
-  weekend schedule with colored class chips.
+- **MotoGP Next Event** (`motogp-next-event-card`) — circuit stats, the track layout map, a live
+  countdown, and the weekend schedule with colored class chips.
 - **MotoGP Results** (`motogp-results-card`) — per-class standings and the latest podium.
 
 Add them from **Dashboard → Edit → + Add Card** (search "MotoGP") and configure in the visual

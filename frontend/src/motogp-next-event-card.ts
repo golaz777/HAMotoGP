@@ -43,6 +43,7 @@ export class MotoGPNextEventCard extends LitElement {
     this._config = {
       entity: "sensor.motogp_next_event",
       show_circuit: true,
+      show_track_map: true,
       show_countdown: true,
       ...config,
     };
@@ -94,6 +95,14 @@ export class MotoGPNextEventCard extends LitElement {
             📍 ${a.circuit ?? ""}${a.city ? `, ${a.city}` : ""}
           </div>
           ${this._config.show_circuit !== false ? this._circuit(ci) : nothing}
+          ${this._config.show_track_map !== false && ci.track_map
+            ? html`<img
+                class="track-map"
+                src=${ci.track_map}
+                alt="${a.circuit ?? "Circuit"} layout"
+                loading="lazy"
+              />`
+            : nothing}
           ${schedule.length === 0
             ? html`<div class="empty">Schedule not available yet.</div>`
             : groups.map(

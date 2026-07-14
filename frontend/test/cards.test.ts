@@ -17,7 +17,7 @@ function fakeHass(): HomeAssistant {
           city: "Silverstone",
           date_start: "2026-08-16T12:00:00Z",
           date_end: "2026-08-16T13:00:00Z",
-          circuit_info: { country_code: "GB", length_km: 5.9, corners: 18, left_corners: 8, right_corners: 10 },
+          circuit_info: { country_code: "GB", length_km: 5.9, corners: 18, left_corners: 8, right_corners: 10, track_map: "https://photos.motogp.com/gbr-info.svg" },
           schedule: [
             { class: "MGP", session: "Race", kind: "RACE", start: "2026-08-16T12:00:00Z", end: "2026-08-16T13:00:00Z" },
           ],
@@ -42,6 +42,18 @@ describe("motogp-next-event-card", () => {
     const text = el.shadowRoot!.textContent as string;
     expect(text).toContain("British GP");
     expect(text).toContain("Race");
+    const img = el.shadowRoot!.querySelector("img.track-map") as HTMLImageElement | null;
+    expect(img?.getAttribute("src")).toBe("https://photos.motogp.com/gbr-info.svg");
+    el.remove();
+  });
+
+  it("hides the track map when show_track_map is false", async () => {
+    const el = document.createElement("motogp-next-event-card") as any;
+    el.setConfig({ type: "custom:motogp-next-event-card", show_track_map: false });
+    el.hass = fakeHass();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector("img.track-map")).toBeNull();
     el.remove();
   });
 

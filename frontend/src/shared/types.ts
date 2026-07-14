@@ -25,6 +25,7 @@ export interface NextEventCardConfig {
   entity?: string;
   title?: string;
   show_circuit?: boolean;
+  show_track_map?: boolean;
   show_countdown?: boolean;
   classes?: ClassAcronym[];
 }

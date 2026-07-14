@@ -3,6 +3,17 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.5.1] - 2026-07-14
+
+### Added
+- Track layout image on the "Next event" card. The integration now exposes the circuit's
+  official artwork (`circuit_info.track_map`, the detailed SVG with numbered corners and
+  sectors, plus `circuit_info.track_map_simple`, the plain PNG silhouette) from the MotoGP API.
+  The custom `motogp-next-event-card` renders the detailed map below the circuit stats, toggled
+  by a new `show_track_map` option (default on) in the visual editor. The Markdown fallback
+  cards (`dashboards/next_event_card.yaml` and the copy in `dashboards/motogp_dashboard.yaml`)
+  show it too.
+
 ## [0.4.0] - 2026-07-14
 
 ### Changed

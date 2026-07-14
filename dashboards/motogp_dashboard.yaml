@@ -42,6 +42,10 @@ views:
           {% if ci.get('designer') %}{% set stats = stats + ['**Designer:** ' ~ ci.get('designer')] %}{% endif %}
           {% if ci.get('constructed') %}{% set stats = stats + ['**Built:** ' ~ ci.get('constructed')] %}{% endif %}
           {% if stats %}{{ stats | join(' &nbsp;·&nbsp; ') }}{% else %}_No circuit details available._{% endif %}
+          {% if ci.get('track_map') %}
+
+          ![Circuit layout]({{ ci.get('track_map') }})
+          {% endif %}
 
           ### 📅 Weekend schedule
           {% set schedule = state_attr(s, 'schedule') or [] %}

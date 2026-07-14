@@ -84,6 +84,14 @@ export const cardStyles = css`
     margin-bottom: 4px;
   }
   .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+  .track-map {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 12px auto 4px;
+    border-radius: 10px;
+    background: #111;
+  }
   .pill {
     background: var(--secondary-background-color);
     border: 1px solid var(--divider-color);

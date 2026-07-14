@@ -57,6 +57,26 @@ async def test_next_event_circuit_enriched(hass: HomeAssistant, mock_client) -> 
     assert isinstance(circuit["length_m"], int) and circuit["length_m"] > 0
     assert isinstance(circuit["corners"], int) and circuit["corners"] > 0
     assert circuit["corners"] == circuit["left_corners"] + circuit["right_corners"]
+    # Track layout artwork is exposed for the card (may be None if absent).
+    assert "track_map" in circuit
+    assert "track_map_simple" in circuit
+
+
+def test_parse_circuit_track_map() -> None:
+    """Track layout asset URLs are pulled from track.assets."""
+    circuit = MotoGPDataUpdateCoordinator._parse_circuit(
+        {
+            "name": "Chang International Circuit",
+            "track": {
+                "assets": {
+                    "info": {"path": "https://photos.motogp.com/.../tha-info.svg"},
+                    "simple": {"path": "https://photos.motogp.com/.../tha.png"},
+                }
+            },
+        }
+    )
+    assert circuit["track_map"] == "https://photos.motogp.com/.../tha-info.svg"
+    assert circuit["track_map_simple"] == "https://photos.motogp.com/.../tha.png"
 
 
 def test_parse_circuit_defensive() -> None:
@@ -65,6 +85,8 @@ def test_parse_circuit_defensive() -> None:
     assert empty["name"] is None
     assert empty["length_m"] is None
     assert empty["corners"] is None
+    assert empty["track_map"] is None
+    assert empty["track_map_simple"] is None
 
     blanks = MotoGPDataUpdateCoordinator._parse_circuit(
         {"name": "X", "track": {"left_corners": "", "lenght": "abc"}}

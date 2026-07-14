@@ -42,6 +42,11 @@ export class NextEventCardEditor extends LitElement {
           Show circuit data
         </label>
         <label>
+          <input type="checkbox" .checked=${this._config.show_track_map !== false}
+            @change=${(e: Event) => this._emit({ show_track_map: (e.target as HTMLInputElement).checked })} />
+          Show track map
+        </label>
+        <label>
           <input type="checkbox" .checked=${this._config.show_countdown !== false}
             @change=${(e: Event) => this._emit({ show_countdown: (e.target as HTMLInputElement).checked })} />
           Show live countdown
