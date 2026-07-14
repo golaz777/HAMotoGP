@@ -3,6 +3,17 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.3.0] - 2026-07-14
+
+### Added
+- Two custom Lovelace cards, bundled with the integration and auto-registered (no manual
+  resource install): `motogp-next-event-card` (circuit data, live countdown and the full
+  weekend schedule for all three classes) and `motogp-results-card` (per-class standings and
+  the latest podium). Configurable via the dashboard GUI editor.
+
+### Changed
+- Minimum Home Assistant version is now 2024.7.0 (for `async_register_static_paths`).
+
 ## [0.2.0] - 2026-07-14
 
 ### Added

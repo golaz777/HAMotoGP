@@ -101,6 +101,19 @@ The card reads `sensor.motogp_next_event`, including its `circuit_info` attribut
 Verify in **Developer Tools → States** (filter `sensor.motogp_next_event`), and use
 **Developer Tools → Template** to dry-run the card's Jinja against your live data before saving.
 
+### Custom cards (richer UI)
+
+Installing the integration also registers two custom Lovelace cards automatically — no manual
+resource setup:
+
+- **MotoGP Next Event** (`motogp-next-event-card`) — circuit stats, a live countdown, and the
+  weekend schedule with colored class chips.
+- **MotoGP Results** (`motogp-results-card`) — per-class standings and the latest podium.
+
+Add them from **Dashboard → Edit → + Add Card** (search "MotoGP") and configure in the visual
+editor. Requires Home Assistant 2024.7+. The Markdown cards above remain available as a
+zero-JavaScript alternative.
+
 ## Development
 
 ```bash
