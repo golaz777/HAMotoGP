@@ -55,3 +55,40 @@ describe("motogp-next-event-card", () => {
     el.remove();
   });
 });
+
+describe("motogp-results-card", () => {
+  function hassWithResults(): HomeAssistant {
+    return {
+      states: {
+        "sensor.motogp_motogp_standings": {
+          entity_id: "sensor.motogp_motogp_standings",
+          state: "Jorge Martin",
+          attributes: { standings: [ { position: 1, rider: "Jorge Martin", team: "Aprilia Racing", points: 208 } ] },
+        },
+        "sensor.motogp_motogp_latest_result": {
+          entity_id: "sensor.motogp_motogp_latest_result",
+          state: "Marc Marquez",
+          attributes: { event: "GERMAN GP", podium: [ { position: 1, rider: "Marc Marquez", team: "Ducati Lenovo", points: 25 } ] },
+        },
+      },
+      locale: { language: "en" },
+    };
+  }
+
+  it("registers the element", () => {
+    expect(customElements.get("motogp-results-card")).toBeTypeOf("function");
+  });
+
+  it("renders standings and podium for the default class", async () => {
+    const el = document.createElement("motogp-results-card") as any;
+    el.setConfig({ type: "custom:motogp-results-card" });
+    el.hass = hassWithResults();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const text = el.shadowRoot!.textContent as string;
+    expect(text).toContain("Jorge Martin");
+    expect(text).toContain("Marc Marquez");
+    expect(text).toContain("GERMAN GP");
+    el.remove();
+  });
+});
