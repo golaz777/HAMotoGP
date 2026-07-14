@@ -1,0 +1,23 @@
+name: frontend
+on:
+  push:
+    paths: ["frontend/**", "custom_components/motogp/frontend/**"]
+  pull_request:
+    paths: ["frontend/**", "custom_components/motogp/frontend/**"]
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Fail if committed bundle is stale
+        run: git diff --exit-code ../custom_components/motogp/frontend/motogp-cards.js
