@@ -70,20 +70,26 @@ views:
           - type: markdown
             content: |
               ### 🏆 MotoGP
+              | # | Rider | Pts |
+              |:--:|:--|--:|
               {% for r in state_attr('sensor.motogp_motogp_standings', 'standings') or [] %}
-              {{ r.position }}. **{{ r.rider }}** — {{ r.points }} pts
+              | {{ r.position }} | {{ r.rider }} | **{{ r.points }}** |
               {% endfor %}
           - type: markdown
             content: |
-              ### 🏆 Moto2
+              ### 🥈 Moto2
+              | # | Rider | Pts |
+              |:--:|:--|--:|
               {% for r in state_attr('sensor.motogp_moto2_standings', 'standings') or [] %}
-              {{ r.position }}. **{{ r.rider }}** — {{ r.points }} pts
+              | {{ r.position }} | {{ r.rider }} | **{{ r.points }}** |
               {% endfor %}
           - type: markdown
             content: |
-              ### 🏆 Moto3
+              ### 🥉 Moto3
+              | # | Rider | Pts |
+              |:--:|:--|--:|
               {% for r in state_attr('sensor.motogp_moto3_standings', 'standings') or [] %}
-              {{ r.position }}. **{{ r.rider }}** — {{ r.points }} pts
+              | {{ r.position }} | {{ r.rider }} | **{{ r.points }}** |
               {% endfor %}
 
       # --- Latest race podium for each class ---
@@ -91,24 +97,30 @@ views:
         cards:
           - type: markdown
             content: |
+              ### 🏁 MotoGP
               {% set medals = {1: '🥇', 2: '🥈', 3: '🥉'} %}
-              ### MotoGP — {{ state_attr('sensor.motogp_motogp_latest_result', 'event') }}
+              _{{ state_attr('sensor.motogp_motogp_latest_result', 'event') }}_
+
               {% for r in state_attr('sensor.motogp_motogp_latest_result', 'podium') or [] %}
-              {{ medals[r.position] }} **{{ r.rider }}** _({{ r.team }})_
+              - {{ medals[r.position] }} **{{ r.rider }}**
               {% endfor %}
           - type: markdown
             content: |
+              ### 🏁 Moto2
               {% set medals = {1: '🥇', 2: '🥈', 3: '🥉'} %}
-              ### Moto2 — {{ state_attr('sensor.motogp_moto2_latest_result', 'event') }}
+              _{{ state_attr('sensor.motogp_moto2_latest_result', 'event') }}_
+
               {% for r in state_attr('sensor.motogp_moto2_latest_result', 'podium') or [] %}
-              {{ medals[r.position] }} **{{ r.rider }}** _({{ r.team }})_
+              - {{ medals[r.position] }} **{{ r.rider }}**
               {% endfor %}
           - type: markdown
             content: |
+              ### 🏁 Moto3
               {% set medals = {1: '🥇', 2: '🥈', 3: '🥉'} %}
-              ### Moto3 — {{ state_attr('sensor.motogp_moto3_latest_result', 'event') }}
+              _{{ state_attr('sensor.motogp_moto3_latest_result', 'event') }}_
+
               {% for r in state_attr('sensor.motogp_moto3_latest_result', 'podium') or [] %}
-              {{ medals[r.position] }} **{{ r.rider }}** _({{ r.team }})_
+              - {{ medals[r.position] }} **{{ r.rider }}**
               {% endfor %}
 
       # --- Full season calendar ---

@@ -67,80 +67,20 @@ want fresher session data.
 | `sensor.motogp_<class>_standings` | leader name | `leader_points`, `standings` (top 5) |
 | `sensor.motogp_<class>_latest_result` | winner name | `event`, `date`, `podium` |
 
-## Sample dashboard card
+## Dashboard
 
-A ready-to-paste card that shows a **next-race countdown**, the **session schedule**, the
-**MotoGP standings** and the **latest podium**. It uses only built-in cards (no custom
-frontend resources required). Add it via **Dashboard → Edit → ⋮ → Raw configuration editor**,
-or as a single card with **Add card → Manual**.
+Two ready-to-paste layouts are provided in [`dashboards/`](dashboards/), built with only
+**built-in cards** (no custom frontend resources / HACS cards required):
 
-```yaml
-type: vertical-stack
-cards:
-  # --- Next race + countdown ---
-  - type: markdown
-    content: >
-      ## 🏁 {{ state_attr('sensor.motogp_next_event', 'name') }}
+- [`next_event_card.yaml`](dashboards/next_event_card.yaml) — the **"Next event" card**: the
+  upcoming round's **circuit data** (track length, corners, longest straight, designer, …) and
+  the **complete weekend schedule for all three classes** as a chronological, day-by-day table.
+  Reads the `circuit_info` and `schedule` attributes of `sensor.motogp_next_event`.
+- [`motogp_dashboard.yaml`](dashboards/motogp_dashboard.yaml) — a **complete single-view
+  dashboard**: the next-event card plus per-class championship standings, the latest podium and
+  the season calendar.
 
-      **{{ state_attr('sensor.motogp_next_event', 'circuit') }}**,
-      {{ state_attr('sensor.motogp_next_event', 'country') }}
-
-      {% set start = states('sensor.motogp_next_event') %}
-      {% if start not in ['unknown', 'unavailable'] %}
-      🕒 Lights out
-      <font color="#e2001a">**{{ (as_datetime(start) - now()).days }}
-      days**</font> from now
-      — {{ as_timestamp(start) | timestamp_custom('%a %d %b, %H:%M') }}
-      {% endif %}
-
-  # --- Session schedule (this weekend) ---
-  - type: markdown
-    content: >
-      ### Schedule
-      {% for s in state_attr('sensor.motogp_next_event', 'schedule') %}
-      {% if s.class == 'MGP' %}
-      - **{{ s.session }}** · {{ as_timestamp(s.start) | timestamp_custom('%a %H:%M') }}
-      {% endif %}
-      {% endfor %}
-
-  # --- Championship standings (top 5) ---
-  - type: markdown
-    content: >
-      ### 🏆 MotoGP standings
-      {% for r in state_attr('sensor.motogp_motogp_standings', 'standings') %}
-      {{ r.position }}. **{{ r.rider }}** — {{ r.points }} pts _({{ r.team }})_
-      {% endfor %}
-
-  # --- Latest race podium ---
-  - type: markdown
-    content: >
-      ### 🥇 Latest result — {{ state_attr('sensor.motogp_motogp_latest_result', 'event') }}
-      {% set medals = {1: '🥇', 2: '🥈', 3: '🥉'} %}
-      {% for r in state_attr('sensor.motogp_motogp_latest_result', 'podium') %}
-      {{ medals[r.position] }} **{{ r.rider }}** _({{ r.team }})_
-      {% endfor %}
-
-  # --- Full season calendar ---
-  - type: calendar
-    title: MotoGP calendar
-    entities:
-      - calendar.motogp_calendar
-```
-
-> Swap `motogp` for `moto2` / `moto3` in the standings and result entity ids (and the `MGP`
-> filter in the schedule loop → `MT2` / `MT3`) to feature a different class.
-
-## "Next event" card (circuit data + full weekend schedule)
-
-A dedicated Markdown card that shows the upcoming round's **circuit data** (track length,
-corners, longest straight, designer, …) and the **complete weekend schedule for all three
-classes** in one chronological, day-by-day table. It reads the enriched `circuit_info`
-attribute and the `schedule` list from `sensor.motogp_next_event`, and needs no custom
-frontend resources.
-
-The full YAML lives in [`dashboards/next_event_card.yaml`](dashboards/next_event_card.yaml).
-
-**Add it as a single card**
+**Add the single card**
 
 1. Open your dashboard → **✏️ Edit dashboard**.
 2. **+ Add Card** → scroll down → **Manual**.
