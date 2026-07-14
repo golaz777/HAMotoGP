@@ -1,14 +1,3 @@
-# MotoGP "Next event" card
-#
-# A self-contained Home Assistant Markdown card (no custom cards / HACS resources
-# required). It renders circuit data and the full weekend schedule for all three
-# classes from the `sensor.motogp_next_event` entity created by the MotoGP
-# integration.
-#
-# To use: Dashboard -> Edit -> Add Card -> Manual, then paste everything below.
-#
-# The schedule is built as a list of lines joined with real newlines so the
-# Markdown table renders correctly regardless of template whitespace handling.
 type: markdown
 title: MotoGP Next Event
 content: |

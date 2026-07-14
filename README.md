@@ -85,7 +85,7 @@ Two ready-to-paste layouts are provided in [`dashboards/`](dashboards/), built w
 1. Open your dashboard → **✏️ Edit dashboard**.
 2. **+ Add Card** → scroll down → **Manual**.
 3. Paste the contents of [`dashboards/next_event_card.yaml`](dashboards/next_event_card.yaml)
-   (the `#` comment lines are optional) → **Save**.
+   → **Save**.
 
 **Or drop in the whole dashboard**
 

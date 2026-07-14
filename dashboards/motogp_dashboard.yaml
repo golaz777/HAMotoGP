@@ -1,12 +1,3 @@
-# MotoGP — complete dashboard
-#
-# A ready-to-paste single-view Home Assistant dashboard using only built-in cards
-# (no custom cards / HACS frontend resources required). It combines the "Next event"
-# card (circuit data + full weekend schedule for all three classes), championship
-# standings, the latest podium and the season calendar.
-#
-# To use: Settings -> Dashboards -> + Add Dashboard (or edit an existing one) ->
-#   Edit -> ⋮ -> Raw configuration editor, then paste everything below.
 title: MotoGP
 views:
   - title: MotoGP
