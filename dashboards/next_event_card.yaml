@@ -26,18 +26,18 @@ content: |
   {% elif days == 1 %}{% set countdown = ' · 🏁 In 1 day' %}
   {% else %}{% set countdown = ' · 🏁 In ' ~ days ~ ' days' %}{% endif %}
   ## {{ name }}
-  📍 {{ state_attr(s, 'city') }}{% if ci.country %}, {{ ci.country }}{% endif %}{{ countdown }}
+  📍 {{ state_attr(s, 'city') }}{% if ci.get('country') %}, {{ ci.get('country') }}{% endif %}{{ countdown }}
 
   **{{ as_timestamp(state_attr(s, 'date_start')) | timestamp_custom('%a %d %b') }} – {{ as_timestamp(state_attr(s, 'date_end')) | timestamp_custom('%a %d %b') }}**
 
   ### 🏟️ {{ state_attr(s, 'circuit') }}
   {% set stats = [] %}
-  {% if ci.length_km %}{% set stats = stats + ['**Length:** ' ~ ci.length_km ~ ' km'] %}{% endif %}
-  {% if ci.corners %}{% set stats = stats + ['**Corners:** ' ~ ci.corners ~ ' (' ~ (ci.left_corners or 0) ~ 'L / ' ~ (ci.right_corners or 0) ~ 'R)'] %}{% endif %}
-  {% if ci.longest_straight_m %}{% set stats = stats + ['**Longest straight:** ' ~ ci.longest_straight_m ~ ' m'] %}{% endif %}
-  {% if ci.width_m %}{% set stats = stats + ['**Width:** ' ~ ci.width_m ~ ' m'] %}{% endif %}
-  {% if ci.designer %}{% set stats = stats + ['**Designer:** ' ~ ci.designer] %}{% endif %}
-  {% if ci.constructed %}{% set stats = stats + ['**Built:** ' ~ ci.constructed] %}{% endif %}
+  {% if ci.get('length_km') %}{% set stats = stats + ['**Length:** ' ~ ci.get('length_km') ~ ' km'] %}{% endif %}
+  {% if ci.get('corners') %}{% set stats = stats + ['**Corners:** ' ~ ci.get('corners') ~ ' (' ~ (ci.get('left_corners') or 0) ~ 'L / ' ~ (ci.get('right_corners') or 0) ~ 'R)'] %}{% endif %}
+  {% if ci.get('longest_straight_m') %}{% set stats = stats + ['**Longest straight:** ' ~ ci.get('longest_straight_m') ~ ' m'] %}{% endif %}
+  {% if ci.get('width_m') %}{% set stats = stats + ['**Width:** ' ~ ci.get('width_m') ~ ' m'] %}{% endif %}
+  {% if ci.get('designer') %}{% set stats = stats + ['**Designer:** ' ~ ci.get('designer')] %}{% endif %}
+  {% if ci.get('constructed') %}{% set stats = stats + ['**Built:** ' ~ ci.get('constructed')] %}{% endif %}
   {% if stats %}{{ stats | join(' &nbsp;·&nbsp; ') }}{% else %}_No circuit details available._{% endif %}
 
   ### 📅 Weekend schedule
