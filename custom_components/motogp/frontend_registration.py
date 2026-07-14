@@ -19,10 +19,10 @@ async def async_register_frontend(hass: HomeAssistant) -> None:
     """Serve the card bundle and add it as an extra JS module (once per hass)."""
     if hass.data.get(_REGISTERED_KEY):
         return
-    hass.data[_REGISTERED_KEY] = True
     http = getattr(hass, "http", None)
     if http is None:
         return
+    hass.data[_REGISTERED_KEY] = True
     await http.async_register_static_paths(
         [StaticPathConfig(FRONTEND_URL, str(_BUNDLE), False)]
     )
