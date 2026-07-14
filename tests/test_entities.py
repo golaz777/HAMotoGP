@@ -40,6 +40,10 @@ async def test_next_event_sensor(hass: HomeAssistant, mock_client) -> None:
     assert state is not None
     assert state.attributes.get("circuit")
     assert isinstance(state.attributes.get("schedule"), list)
+    circuit_info = state.attributes.get("circuit_info")
+    assert isinstance(circuit_info, dict)
+    assert "length_km" in circuit_info
+    assert "corners" in circuit_info
 
 
 async def test_standings_and_result_sensors(hass: HomeAssistant, mock_client) -> None:

@@ -3,6 +3,15 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.2.0] - 2026-07-14
+
+### Added
+- Enriched circuit data on the next-event sensor: a new `circuit_info` attribute exposing
+  track length, corner counts (left/right/total), longest straight, width, designer,
+  construction year, country code and coordinates.
+- A dedicated "Next event" Markdown dashboard card (`dashboards/next_event_card.yaml`) showing
+  the circuit data and the full weekend schedule for all three classes as a day-by-day table.
+
 ## [0.1.0] - 2026-07-13
 
 ### Added

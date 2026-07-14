@@ -63,7 +63,7 @@ want fresher session data.
 | Entity | Example state | Key attributes |
 |--------|---------------|----------------|
 | `calendar.motogp_calendar` | on/off | current/next round summary, location |
-| `sensor.motogp_next_event` | round start timestamp | `circuit`, `country`, `days_until`, `schedule` |
+| `sensor.motogp_next_event` | round start timestamp | `circuit`, `city`, `country`, `days_until`, `schedule`, `circuit_info` (length, corners, longest straight, designer, …) |
 | `sensor.motogp_<class>_standings` | leader name | `leader_points`, `standings` (top 5) |
 | `sensor.motogp_<class>_latest_result` | winner name | `event`, `date`, `podium` |
 
@@ -129,6 +129,17 @@ cards:
 
 > Swap `motogp` for `moto2` / `moto3` in the standings and result entity ids (and the `MGP`
 > filter in the schedule loop → `MT2` / `MT3`) to feature a different class.
+
+## "Next event" card (circuit data + full weekend schedule)
+
+A dedicated Markdown card that shows the upcoming round's **circuit data** (track length,
+corners, longest straight, designer, …) and the **complete weekend schedule for all three
+classes** in one chronological, day-by-day table. It reads the enriched `circuit_info`
+attribute and the `schedule` list from `sensor.motogp_next_event`, and needs no custom
+frontend resources.
+
+The full YAML lives in [`dashboards/next_event_card.yaml`](dashboards/next_event_card.yaml).
+Add it via **Dashboard → Edit → Add card → Manual** and paste the file's contents.
 
 ## Development
 

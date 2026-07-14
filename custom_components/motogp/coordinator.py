@@ -34,6 +34,22 @@ def _parse_dt(value: str | None) -> datetime | None:
     return dt_util.parse_datetime(value)
 
 
+def _to_int(value: Any) -> int | None:
+    """Coerce an API value (often a string) to int, or ``None`` if not possible."""
+    try:
+        return int(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def _to_float(value: Any) -> float | None:
+    """Coerce an API value (often a string) to float, or ``None`` if not possible."""
+    try:
+        return float(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
 class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     """Fetch and structure MotoGP calendar, standings and results data."""
 
@@ -107,7 +123,6 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             date_end = _parse_dt(event.get("date_end"))
             if date_start is None:
                 continue
-            circuit = event.get("circuit") or {}
             parsed.append(
                 {
                     "id": event.get("id"),
@@ -117,11 +132,7 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     "status": event.get("status"),
                     "date_start": date_start,
                     "date_end": date_end,
-                    "circuit": {
-                        "name": circuit.get("name"),
-                        "city": circuit.get("city"),
-                        "country": circuit.get("country"),
-                    },
+                    "circuit": self._parse_circuit(event.get("circuit") or {}),
                     "sessions": self._parse_sessions(
                         event.get("broadcasts") or [], selected_acronyms
                     ),
@@ -129,6 +140,45 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             )
         parsed.sort(key=lambda e: e["date_start"])
         return parsed
+
+    @staticmethod
+    def _parse_circuit(circuit: dict[str, Any]) -> dict[str, Any]:
+        """Reduce the API circuit object to the fields the entities expose.
+
+        Includes rich track metrics (length, corners, longest straight) when the
+        API provides them. Every field is optional and may be ``None``.
+        """
+        track = circuit.get("track") or {}
+        length_units = track.get("lenght_units") or {}
+        width_units = track.get("width_units") or {}
+        straight_units = track.get("longest_straight_units") or {}
+
+        left = _to_int(track.get("left_corners"))
+        right = _to_int(track.get("right_corners"))
+        corners = left + right if left is not None and right is not None else None
+
+        # The API misspells "length" as "lenght"; prefer the parsed unit values.
+        length_m = _to_int(length_units.get("meters")) or _to_int(track.get("lenght"))
+        length_km = _to_float(length_units.get("kiloMeters"))
+
+        return {
+            "name": circuit.get("name"),
+            "city": circuit.get("city"),
+            "country": circuit.get("country"),
+            "country_code": circuit.get("iso_code"),
+            "designer": circuit.get("designer"),
+            "constructed": circuit.get("constructed"),
+            "lat": _to_float(circuit.get("lat")),
+            "lng": _to_float(circuit.get("lng")),
+            "length_m": length_m,
+            "length_km": length_km,
+            "width_m": _to_int(width_units.get("meters")) or _to_int(track.get("width")),
+            "longest_straight_m": _to_int(straight_units.get("meters"))
+            or _to_int(track.get("longest_straight")),
+            "left_corners": left,
+            "right_corners": right,
+            "corners": corners,
+        }
 
     @staticmethod
     def _parse_sessions(

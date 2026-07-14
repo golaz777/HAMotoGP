@@ -46,6 +46,35 @@ async def test_next_event_is_first_upcoming(hass: HomeAssistant, mock_client) ->
     assert next_event["status"] != "FINISHED"
 
 
+async def test_next_event_circuit_enriched(hass: HomeAssistant, mock_client) -> None:
+    """next_event circuit should carry rich track metrics from the API."""
+    coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)
+    data = await coordinator._async_update_data()
+
+    circuit = data["next_event"]["circuit"]
+    assert circuit["name"]
+    assert circuit["country_code"]
+    assert isinstance(circuit["length_m"], int) and circuit["length_m"] > 0
+    assert isinstance(circuit["corners"], int) and circuit["corners"] > 0
+    assert circuit["corners"] == circuit["left_corners"] + circuit["right_corners"]
+
+
+def test_parse_circuit_defensive() -> None:
+    """A partial or empty circuit object must not raise and yields None fields."""
+    empty = MotoGPDataUpdateCoordinator._parse_circuit({})
+    assert empty["name"] is None
+    assert empty["length_m"] is None
+    assert empty["corners"] is None
+
+    blanks = MotoGPDataUpdateCoordinator._parse_circuit(
+        {"name": "X", "track": {"left_corners": "", "lenght": "abc"}}
+    )
+    assert blanks["name"] == "X"
+    assert blanks["length_m"] is None
+    assert blanks["left_corners"] is None
+    assert blanks["corners"] is None
+
+
 async def test_standings_parsed_top_n(hass: HomeAssistant, mock_client) -> None:
     """Standings should be reduced to leader-first top rows."""
     coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)

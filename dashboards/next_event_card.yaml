@@ -1,0 +1,60 @@
+# MotoGP "Next event" card
+#
+# A self-contained Home Assistant Markdown card (no custom cards / HACS resources
+# required). It renders circuit data and the full weekend schedule for all three
+# classes from the `sensor.motogp_next_event` entity created by the MotoGP
+# integration.
+#
+# To use: Dashboard -> Edit -> Add Card -> Manual, then paste everything below.
+#
+# The schedule is built as a list of lines joined with real newlines so the
+# Markdown table renders correctly regardless of template whitespace handling.
+type: markdown
+title: MotoGP Next Event
+content: |
+  {% set s = 'sensor.motogp_next_event' %}
+  {% set name = state_attr(s, 'name') %}
+  {% if name is none %}
+  _No upcoming Grand Prix found._
+  {% else %}
+  {% set ci = state_attr(s, 'circuit_info') or {} %}
+  {% set labels = {'MGP': '🏍️ MotoGP', 'MT2': '🏍️ Moto2', 'MT3': '🏍️ Moto3'} %}
+  {% set days = state_attr(s, 'days_until') %}
+  {% if days is none %}{% set countdown = '' %}
+  {% elif days < 0 %}{% set countdown = ' · 🔴 Race weekend under way' %}
+  {% elif days == 0 %}{% set countdown = ' · 🏁 Starts today' %}
+  {% elif days == 1 %}{% set countdown = ' · 🏁 In 1 day' %}
+  {% else %}{% set countdown = ' · 🏁 In ' ~ days ~ ' days' %}{% endif %}
+  ## {{ name }}
+  📍 {{ state_attr(s, 'city') }}{% if ci.country %}, {{ ci.country }}{% endif %}{{ countdown }}
+
+  **{{ as_timestamp(state_attr(s, 'date_start')) | timestamp_custom('%a %d %b') }} – {{ as_timestamp(state_attr(s, 'date_end')) | timestamp_custom('%a %d %b') }}**
+
+  ### 🏟️ {{ state_attr(s, 'circuit') }}
+  {% set stats = [] %}
+  {% if ci.length_km %}{% set stats = stats + ['**Length:** ' ~ ci.length_km ~ ' km'] %}{% endif %}
+  {% if ci.corners %}{% set stats = stats + ['**Corners:** ' ~ ci.corners ~ ' (' ~ (ci.left_corners or 0) ~ 'L / ' ~ (ci.right_corners or 0) ~ 'R)'] %}{% endif %}
+  {% if ci.longest_straight_m %}{% set stats = stats + ['**Longest straight:** ' ~ ci.longest_straight_m ~ ' m'] %}{% endif %}
+  {% if ci.width_m %}{% set stats = stats + ['**Width:** ' ~ ci.width_m ~ ' m'] %}{% endif %}
+  {% if ci.designer %}{% set stats = stats + ['**Designer:** ' ~ ci.designer] %}{% endif %}
+  {% if ci.constructed %}{% set stats = stats + ['**Built:** ' ~ ci.constructed] %}{% endif %}
+  {% if stats %}{{ stats | join(' &nbsp;·&nbsp; ') }}{% else %}_No circuit details available._{% endif %}
+
+  ### 📅 Weekend schedule
+  {% set schedule = state_attr(s, 'schedule') or [] %}
+  {% if schedule %}
+  {% set ns = namespace(day='', lines=[]) %}
+  {% for x in schedule %}
+  {% set day = as_timestamp(x.start) | timestamp_custom('%A %-d %B') %}
+  {% if day != ns.day %}
+  {% set ns.day = day %}
+  {% set ns.lines = ns.lines + ['', '**' ~ day ~ '**', '', '| Time | Class | Session |', '|------|-------|---------|'] %}
+  {% endif %}
+  {% set marker = '🏁 ' if x.kind == 'RACE' else ('⚡ ' if x.kind == 'SPRINT' else '') %}
+  {% set ns.lines = ns.lines + ['| ' ~ (as_timestamp(x.start) | timestamp_custom('%H:%M')) ~ ' | ' ~ labels.get(x['class'], x['class']) ~ ' | ' ~ marker ~ x.session ~ ' |'] %}
+  {% endfor %}
+  {{ ns.lines | join('\n') }}
+  {% else %}
+  _Schedule not available yet._
+  {% endif %}
+  {% endif %}

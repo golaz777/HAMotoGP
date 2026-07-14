@@ -68,6 +68,7 @@ class MotoGPNextEventSensor(MotoGPEntity, SensorEntity):
             "country": event["country"],
             "circuit": circuit["name"],
             "city": circuit["city"],
+            "circuit_info": {k: v for k, v in circuit.items() if k != "name"},
             "date_start": event["date_start"],
             "date_end": event["date_end"],
             "status": event["status"],
