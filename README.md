@@ -139,7 +139,27 @@ attribute and the `schedule` list from `sensor.motogp_next_event`, and needs no 
 frontend resources.
 
 The full YAML lives in [`dashboards/next_event_card.yaml`](dashboards/next_event_card.yaml).
-Add it via **Dashboard → Edit → Add card → Manual** and paste the file's contents.
+
+**Add it as a single card**
+
+1. Open your dashboard → **✏️ Edit dashboard**.
+2. **+ Add Card** → scroll down → **Manual**.
+3. Paste the contents of [`dashboards/next_event_card.yaml`](dashboards/next_event_card.yaml)
+   (the `#` comment lines are optional) → **Save**.
+
+**Or drop in the whole dashboard**
+
+For a complete view (next event + standings + latest podium + calendar), open
+**Settings → Dashboards → + Add Dashboard** (or an existing one) → **✏️ Edit** → **⋮ →
+Raw configuration editor**, then paste
+[`dashboards/motogp_dashboard.yaml`](dashboards/motogp_dashboard.yaml).
+
+**Prerequisites**
+
+The card reads `sensor.motogp_next_event`, including its `circuit_info` attribute added in
+**v0.2.0** — make sure the integration is set up and updated (0.1.0 has no `circuit_info`).
+Verify in **Developer Tools → States** (filter `sensor.motogp_next_event`), and use
+**Developer Tools → Template** to dry-run the card's Jinja against your live data before saving.
 
 ## Development
 
