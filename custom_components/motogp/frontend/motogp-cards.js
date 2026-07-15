@@ -234,7 +234,13 @@ var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=
   }
   table.standings td.pts, table.standings th.pts { text-align: right; }
   .podium-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
-  .podium-row .medal { flex: 0 0 auto; }
+  .podium-row .medal {
+    flex: 0 0 auto;
+    width: 44px;
+    font-size: 2rem;
+    line-height: 44px;
+    text-align: center;
+  }
   .podium-row .rider-photo { width: 44px; height: 44px; }
   .podium-text { display: flex; flex-direction: column; min-width: 0; }
   .podium-name { line-height: 1.2; white-space: nowrap; }

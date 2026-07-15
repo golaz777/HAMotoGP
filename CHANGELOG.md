@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.6.2] - 2026-07-15
+
+### Changed
+- **Podium medal icon.** The medal emoji is now sized to match the rider photo height (44px) so
+  it no longer looks tiny beside the portrait.
+
 ## [0.6.1] - 2026-07-15
 
 ### Fixed
