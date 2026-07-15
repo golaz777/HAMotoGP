@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.6.3] - 2026-07-15
+
+### Changed
+- **Podium team-color bar.** The team-color swatch on podium rows now spans the full row height
+  (44px), matching the medal icon and rider photo for a more consistent look.
+
 ## [0.6.2] - 2026-07-15
 
 ### Changed

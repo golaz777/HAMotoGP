@@ -172,6 +172,7 @@ export const cardStyles = css`
   .podium-text { display: flex; flex-direction: column; min-width: 0; }
   .podium-name { line-height: 1.2; white-space: nowrap; }
   .swatch { width: 4px; height: 1.2em; border-radius: 2px; }
+  .podium-row .swatch { height: 44px; }
   .rider-cell { display: flex; align-items: center; gap: 8px; }
   .rider-photo {
     width: 26px;
