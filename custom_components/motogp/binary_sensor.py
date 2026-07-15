@@ -31,10 +31,12 @@ def _session_summary(session: dict[str, Any]) -> dict[str, Any]:
     """Reduce a parsed session to the fields exposed as attributes."""
     return {
         "class": session["class"],
+        "class_name": session.get("class_name"),
         "session": session["name"] or session["shortname"],
         "kind": session["kind"],
         "start": session["start"],
         "end": session["end"],
+        "num_laps": session.get("num_laps"),
     }
 
 

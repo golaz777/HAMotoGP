@@ -30,6 +30,15 @@ export interface NextEventCardConfig {
   classes?: ClassAcronym[];
 }
 
+export interface LiveSessionCardConfig {
+  type: string;
+  entity?: string;
+  schedule_entity?: string;
+  title?: string;
+  show_upcoming?: boolean;
+  classes?: ClassAcronym[];
+}
+
 export interface ResultsCardConfig {
   type: string;
   title?: string;

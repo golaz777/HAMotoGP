@@ -4,6 +4,7 @@ import { cardStyles } from "./shared/styles";
 import {
   formatCountdown,
   filterByClasses,
+  flagEmoji,
   groupScheduleByDay,
   nextSessionIndex,
   type ScheduleItem,
@@ -13,12 +14,21 @@ import type { HomeAssistant, NextEventCardConfig, ClassAcronym } from "./shared/
 
 const KIND_MARK: Record<string, string> = { RACE: "🏁", SPRINT: "⚡" };
 
-function flagEmoji(code?: string): string {
-  if (!code || code.length !== 2) return "";
-  const A = 0x1f1e6;
-  return String.fromCodePoint(
-    ...[...code.toUpperCase()].map((c) => A + c.charCodeAt(0) - 65),
-  );
+// Race distance / lap counts per class acronym, from the sensor's race_info.
+interface RaceInfo {
+  num_laps?: number | null;
+  sprint_num_laps?: number | null;
+  distance_km?: number | null;
+}
+
+// Lap/distance meta for a RACE or SPRINT session row.
+function raceMeta(kind: string, info?: RaceInfo): string {
+  if (!info) return "";
+  const laps = kind === "SPRINT" ? info.sprint_num_laps : info.num_laps;
+  const parts: string[] = [];
+  if (laps) parts.push(`${laps} laps`);
+  if (kind === "RACE" && info.distance_km) parts.push(`${info.distance_km} km`);
+  return parts.join(" · ");
 }
 
 @customElement("motogp-next-event-card")
@@ -80,6 +90,7 @@ export class MotoGPNextEventCard extends LitElement {
     );
     const nextIdx = nextSessionIndex(schedule);
     const groups = groupScheduleByDay(schedule, this.hass.locale?.language);
+    const raceInfo = (a.race_info ?? {}) as Record<string, RaceInfo>;
     let flatIdx = 0;
 
     return html`
@@ -110,6 +121,7 @@ export class MotoGPNextEventCard extends LitElement {
                   <div class="day">${g.label}</div>
                   ${g.items.map((s) => {
                     const isNext = flatIdx++ === nextIdx;
+                    const meta = raceMeta(s.kind, raceInfo[s.class]);
                     return html`
                       <div class="row ${isNext ? "next" : ""}">
                         <span class="time">
@@ -123,6 +135,8 @@ export class MotoGPNextEventCard extends LitElement {
                         >
                         <span class="session">
                           ${KIND_MARK[s.kind] ?? ""} ${s.session}
+                          ${meta ? html`<span class="pill">${meta}</span>` : nothing}
+                          ${s.has_live ? html`<span title="Live broadcast">📺</span>` : nothing}
                           ${isNext ? html`<span class="next-tag">NEXT</span>` : nothing}
                         </span>
                       </div>

@@ -103,7 +103,7 @@ describe("motogp-results-card", () => {
         "sensor.motogp_motogp_standings": {
           entity_id: "sensor.motogp_motogp_standings",
           state: "Jorge Martin",
-          attributes: { standings: [ { position: 1, rider: "Jorge Martin", team: "Aprilia Racing", points: 208, number: 89, photo: "https://photos.motogp.com/jm89.png" } ] },
+          attributes: { standings: [ { position: 1, rider: "Jorge Martin", team: "Aprilia Racing", points: 208, number: 89, country_code: "ES", race_wins: 3, podiums: 7, position_change: 1, photo: "https://photos.motogp.com/jm89.png" } ] },
         },
         "sensor.motogp_motogp_latest_result": {
           entity_id: "sensor.motogp_motogp_latest_result",
@@ -111,9 +111,11 @@ describe("motogp-results-card", () => {
           attributes: {
             event: "GERMAN GP",
             weather: { track: "Dry", air: "28º", ground: "42º", humidity: "40%", weather: "Partly-Cloudy" },
+            pole: { type: "poleLap", rider: "Marc Marquez", time: "1:19.041" },
+            fastest_lap: { type: "fastestLap", rider: "Pecco Bagnaia", time: "1:20.112" },
             podium: [
-              { position: 1, rider: "Marc Marquez", team: "Ducati Lenovo", points: 25, time: "40:53.148", average_speed: 161.6, photo: "https://photos.motogp.com/mm93.png" },
-              { position: 2, rider: "Ai Ogura", team: "Trackhouse", points: 20, gap: "2.868", average_speed: 161.2 },
+              { position: 1, rider: "Marc Marquez", team: "Ducati Lenovo", points: 25, country_code: "ES", time: "40:53.148", average_speed: 161.6, photo: "https://photos.motogp.com/mm93.png" },
+              { position: 2, rider: "Ai Ogura", team: "Trackhouse", points: 20, country_code: "JP", gap: "2.868", average_speed: 161.2 },
             ],
           },
         },
@@ -143,6 +145,26 @@ describe("motogp-results-card", () => {
     expect(text).toContain("Partly-Cloudy");
     expect(text).toContain("+2.868s");
     expect(text).toContain("40:53.148");
+    // Records line (pole + fastest lap).
+    expect(text).toContain("Pole");
+    expect(text).toContain("1:19.041");
+    expect(text).toContain("Pecco Bagnaia");
+    el.remove();
+  });
+
+  it("shows championship stats columns and change indicator", async () => {
+    const el = document.createElement("motogp-results-card") as any;
+    el.setConfig({ type: "custom:motogp-results-card" });
+    el.hass = hassWithResults();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const headers = [...el.shadowRoot!.querySelectorAll("table.standings th")].map(
+      (th) => th.textContent,
+    );
+    expect(headers).toContain("W");
+    expect(headers).toContain("P");
+    // Position-change indicator rendered for a mover.
+    expect(el.shadowRoot!.querySelector(".chg.up")).not.toBeNull();
     el.remove();
   });
 
@@ -153,6 +175,78 @@ describe("motogp-results-card", () => {
     document.body.appendChild(el);
     await el.updateComplete;
     expect(el.shadowRoot!.querySelector(".weather")).toBeNull();
+    el.remove();
+  });
+});
+
+describe("motogp-live-session-card", () => {
+  function hassLive(state: "on" | "off"): HomeAssistant {
+    return {
+      states: {
+        "binary_sensor.motogp_session_live": {
+          entity_id: "binary_sensor.motogp_session_live",
+          state,
+          attributes: {
+            live_session:
+              state === "on"
+                ? { class: "MGP", class_name: "MotoGP", session: "Race", kind: "RACE", start: "2026-08-16T12:00:00Z", end: "2026-08-16T13:00:00Z", num_laps: 27 }
+                : null,
+            next_session: { class: "MGP", class_name: "MotoGP", session: "Warm Up", kind: "PRACTICE", start: "2999-01-01T09:00:00Z", end: "2999-01-01T09:20:00Z" },
+          },
+        },
+        "sensor.motogp_next_event": {
+          entity_id: "sensor.motogp_next_event",
+          state: "2026-08-16T12:00:00Z",
+          attributes: {
+            schedule: [
+              { class: "MGP", session: "Race", kind: "RACE", start: "2999-01-01T12:00:00Z", end: "2999-01-01T13:00:00Z", num_laps: 27, has_live: true },
+            ],
+          },
+        },
+      },
+      locale: { language: "en" },
+    };
+  }
+
+  it("registers the element", () => {
+    expect(customElements.get("motogp-live-session-card")).toBeTypeOf("function");
+  });
+
+  it("shows a LIVE badge and the running session when on", async () => {
+    const el = document.createElement("motogp-live-session-card") as any;
+    el.setConfig({ type: "custom:motogp-live-session-card" });
+    el.hass = hassLive("on");
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const text = el.shadowRoot!.textContent as string;
+    expect(el.shadowRoot!.querySelector(".badge.on")).not.toBeNull();
+    expect(text).toContain("LIVE");
+    expect(text).toContain("Race");
+    expect(text).toContain("27 laps");
+    el.remove();
+  });
+
+  it("shows the next session with a countdown when off", async () => {
+    const el = document.createElement("motogp-live-session-card") as any;
+    el.setConfig({ type: "custom:motogp-live-session-card" });
+    el.hass = hassLive("off");
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const text = el.shadowRoot!.textContent as string;
+    expect(el.shadowRoot!.querySelector(".badge.off")).not.toBeNull();
+    expect(text).toContain("Warm Up");
+    // Countdown to the far-future next session.
+    expect(el.shadowRoot!.querySelector(".cd")).not.toBeNull();
+    el.remove();
+  });
+
+  it("shows an unavailable message when the sensor is missing", async () => {
+    const el = document.createElement("motogp-live-session-card") as any;
+    el.setConfig({ type: "custom:motogp-live-session-card" });
+    el.hass = { states: {}, locale: { language: "en" } };
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.textContent).toContain("unavailable");
     el.remove();
   });
 });

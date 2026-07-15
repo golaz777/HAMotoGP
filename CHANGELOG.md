@@ -3,6 +3,24 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.7.1] - 2026-07-15
+
+### Added
+- **MotoGP Live Session card.** A new Lovelace card (`custom:motogp-live-session-card`) shows a
+  pulsing LIVE badge while a session is running, the next-session name with a live countdown when
+  off air, and an upcoming mini-timetable (with lap counts and broadcast markers). Driven by
+  `binary_sensor.motogp_session_live` plus the next-event schedule.
+- **Integration icon.** Ships brand icons (`custom_components/motogp/brand/icon.png`,
+  `icon@2x.png`, `logo.png`) so the integration shows its logo on the Devices & Services page.
+
+### Changed
+- **Next Event card.** Race/Sprint schedule rows now show lap counts and race distance (from
+  `race_info`) and a 📺 marker for sessions with a live broadcast.
+- **Results card.** Standings now show a nationality flag, Wins/Podiums columns and a
+  position-change ▲/▼ indicator; the podium adds nationality flags and a pole / fastest-lap line.
+- **Session-live attributes.** The `live_session` / `next_session` summaries now include
+  `class_name` and `num_laps`.
+
 ## [0.7.0] - 2026-07-15
 
 ### Added

@@ -88,7 +88,11 @@ async def test_session_live_when_window_active(
 
     state = hass.states.get("binary_sensor.motogp_session_live")
     assert state.state == "on"
-    assert state.attributes["live_session"] is not None
+    live = state.attributes["live_session"]
+    assert live is not None
+    # Summary carries class name and lap count for the Live card.
+    assert "class_name" in live
+    assert "num_laps" in live
 
 
 async def test_calendar_entity(hass: HomeAssistant, mock_client) -> None:

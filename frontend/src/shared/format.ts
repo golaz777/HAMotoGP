@@ -6,6 +6,18 @@ export interface ScheduleItem {
   kind: string;
   start: string;
   end: string;
+  num_laps?: number | null;
+  has_live?: boolean | null;
+  has_on_demand?: boolean | null;
+}
+
+/** Convert a 2-letter ISO country code to a flag emoji ("" if invalid). */
+export function flagEmoji(code?: string): string {
+  if (!code || code.length !== 2) return "";
+  const A = 0x1f1e6;
+  return String.fromCodePoint(
+    ...[...code.toUpperCase()].map((c) => A + c.charCodeAt(0) - 65),
+  );
 }
 
 export interface DayGroup {

@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { cardStyles } from "./shared/styles";
+import { flagEmoji } from "./shared/format";
 import { colorForTeam } from "./shared/team-colors";
 import type { HomeAssistant, ResultsCardConfig, ClassKey } from "./shared/types";
 
@@ -22,13 +23,32 @@ function weatherEmoji(weather?: string): string {
   return "🌡️";
 }
 
-// Winner shows total time; others show the gap to the leader.
+// Winner shows total time; others show the gap to the leader (or laps down).
 function resultMeta(r: any): string {
   const parts: string[] = [];
   if (r.position === 1 && r.time) parts.push(r.time);
+  else if (r.laps_down && Number(r.laps_down) > 0) parts.push(`+${r.laps_down} lap`);
   else if (r.gap && r.gap !== "0.000") parts.push(`+${r.gap}s`);
   if (r.average_speed) parts.push(`${r.average_speed} km/h`);
   return parts.join(" · ");
+}
+
+// Position-change indicator vs. the previous round (▲ up / ▼ down / – none).
+function changeMark(change: any): string {
+  const n = Number(change);
+  if (!Number.isFinite(n) || n === 0) return "";
+  return n > 0 ? `▲${n}` : `▼${Math.abs(n)}`;
+}
+
+// A one-line "records" summary from the latest-result pole / fastest lap.
+function recordsLine(res: any) {
+  const pole = res?.pole;
+  const fl = res?.fastest_lap;
+  if (!pole && !fl) return nothing;
+  const parts = [];
+  if (pole?.rider) parts.push(`🏁 Pole ${pole.rider}${pole.time ? ` ${pole.time}` : ""}`);
+  if (fl?.rider) parts.push(`⚡ FL ${fl.rider}${fl.time ? ` ${fl.time}` : ""}`);
+  return html`<div class="records">${parts.join(" · ")}</div>`;
 }
 
 @customElement("motogp-results-card")
@@ -91,19 +111,32 @@ export class MotoGPResultsCard extends LitElement {
     if (rows.length === 0) return html`<div class="empty">No standings.</div>`;
     return html`
       <table class="standings">
-        <tr><th>#</th><th>Rider</th><th class="pts">Pts</th></tr>
-        ${rows.map(
-          (r: any) => html`<tr>
-            <td>${r.position}</td>
+        <tr>
+          <th>#</th><th>Rider</th>
+          <th class="num" title="Wins">W</th>
+          <th class="num" title="Podiums">P</th>
+          <th class="pts">Pts</th>
+        </tr>
+        ${rows.map((r: any) => {
+          const chg = changeMark(r.position_change);
+          return html`<tr>
+            <td>
+              ${r.position}
+              ${chg
+                ? html`<span class="chg ${Number(r.position_change) > 0 ? "up" : "down"}">${chg}</span>`
+                : nothing}
+            </td>
             <td class="rider-cell">
               ${r.photo
                 ? html`<img class="rider-photo" src=${r.photo} alt="" loading="lazy" />`
                 : nothing}
-              <span>${r.rider}</span>
+              <span>${r.country_code ? html`${flagEmoji(r.country_code)} ` : nothing}${r.rider}</span>
             </td>
+            <td class="num">${r.race_wins ?? 0}</td>
+            <td class="num">${r.podiums ?? 0}</td>
             <td class="pts"><strong>${r.points}</strong></td>
-          </tr>`,
-        )}
+          </tr>`;
+        })}
       </table>
     `;
   }
@@ -124,6 +157,7 @@ export class MotoGPResultsCard extends LitElement {
             ${weather.ground ? html`· Ground ${weather.ground}` : nothing}
           </div>`
         : nothing}
+      ${recordsLine(res)}
       ${podium.map(
         (r: any) => html`<div class="podium-row">
           <span class="swatch" style="background:${colorForTeam(r.team, this._config.team_colors)}"></span>
@@ -132,7 +166,7 @@ export class MotoGPResultsCard extends LitElement {
             ? html`<img class="rider-photo" src=${r.photo} alt="" loading="lazy" />`
             : nothing}
           <div class="podium-text">
-            <strong class="podium-name">${r.rider}</strong>
+            <strong class="podium-name">${r.country_code ? html`${flagEmoji(r.country_code)} ` : nothing}${r.rider}</strong>
             <span class="sub">
               ${r.team ?? ""}${resultMeta(r) ? html` — ${resultMeta(r)}` : nothing}
             </span>

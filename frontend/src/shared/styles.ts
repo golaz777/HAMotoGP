@@ -160,6 +160,24 @@ export const cardStyles = css`
     padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--divider-color);
   }
   table.standings td.pts, table.standings th.pts { text-align: right; }
+  table.standings td.num, table.standings th.num {
+    text-align: right;
+    color: var(--secondary-text-color);
+    width: 2.2rem;
+  }
+  .chg {
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-left: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .chg.up { color: #2e9e4f; }
+  .chg.down { color: var(--mgp-red); }
+  .records {
+    color: var(--secondary-text-color);
+    font-size: 0.85rem;
+    margin: 2px 0 8px;
+  }
   .podium-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
   .podium-row .medal {
     flex: 0 0 auto;

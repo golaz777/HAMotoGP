@@ -1,6 +1,6 @@
-var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=>()=>(o&&(t=o(o=0)),t);var _t=(o,t)=>{for(var e in t)ft(o,e,{get:t[e],enumerable:!0})};var g=(o,t,e,s)=>{for(var i=s>1?void 0:s?ie(t,e):t,r=o.length-1,n;r>=0;r--)(n=o[r])&&(i=(s?n(t,e,i):n(i))||i);return s&&i&&ft(t,e,i),i};var F,G,et,$t,U,yt,st,vt,it,ot=m(()=>{F=globalThis,G=F.ShadowRoot&&(F.ShadyCSS===void 0||F.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,et=Symbol(),$t=new WeakMap,U=class{constructor(t,e,s){if(this._$cssResult$=!0,s!==et)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o,e=this.t;if(G&&t===void 0){let s=e!==void 0&&e.length===1;s&&(t=$t.get(e)),t===void 0&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),s&&$t.set(e,t))}return t}toString(){return this.cssText}},yt=o=>new U(typeof o=="string"?o:o+"",void 0,et),st=(o,...t)=>{let e=o.length===1?o[0]:t.reduce((s,i,r)=>s+(n=>{if(n._$cssResult$===!0)return n.cssText;if(typeof n=="number")return n;throw Error("Value passed to 'css' function must be a 'css' function result: "+n+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+o[r+1],o[0]);return new U(e,o,et)},vt=(o,t)=>{if(G)o.adoptedStyleSheets=t.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(let e of t){let s=document.createElement("style"),i=F.litNonce;i!==void 0&&s.setAttribute("nonce",i),s.textContent=e.cssText,o.appendChild(s)}},it=G?o=>o:o=>o instanceof CSSStyleSheet?(t=>{let e="";for(let s of t.cssRules)e+=s.cssText;return yt(e)})(o):o});var oe,re,ne,ae,le,ce,J,xt,he,pe,I,N,X,bt,y,D=m(()=>{ot();ot();({is:oe,defineProperty:re,getOwnPropertyDescriptor:ne,getOwnPropertyNames:ae,getOwnPropertySymbols:le,getPrototypeOf:ce}=Object),J=globalThis,xt=J.trustedTypes,he=xt?xt.emptyScript:"",pe=J.reactiveElementPolyfillSupport,I=(o,t)=>o,N={toAttribute(o,t){switch(t){case Boolean:o=o?he:null;break;case Object:case Array:o=o==null?o:JSON.stringify(o)}return o},fromAttribute(o,t){let e=o;switch(t){case Boolean:e=o!==null;break;case Number:e=o===null?null:Number(o);break;case Object:case Array:try{e=JSON.parse(o)}catch{e=null}}return e}},X=(o,t)=>!oe(o,t),bt={attribute:!0,type:String,converter:N,reflect:!1,useDefault:!1,hasChanged:X};Symbol.metadata??=Symbol("metadata"),J.litPropertyMetadata??=new WeakMap;y=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=bt){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){let s=Symbol(),i=this.getPropertyDescriptor(t,s,e);i!==void 0&&re(this.prototype,t,i)}}static getPropertyDescriptor(t,e,s){let{get:i,set:r}=ne(this.prototype,t)??{get(){return this[e]},set(n){this[e]=n}};return{get:i,set(n){let a=i?.call(this);r?.call(this,n),this.requestUpdate(t,a,s)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??bt}static _$Ei(){if(this.hasOwnProperty(I("elementProperties")))return;let t=ce(this);t.finalize(),t.l!==void 0&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(I("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(I("properties"))){let e=this.properties,s=[...ae(e),...le(e)];for(let i of s)this.createProperty(i,e[i])}let t=this[Symbol.metadata];if(t!==null){let e=litPropertyMetadata.get(t);if(e!==void 0)for(let[s,i]of e)this.elementProperties.set(s,i)}this._$Eh=new Map;for(let[e,s]of this.elementProperties){let i=this._$Eu(e,s);i!==void 0&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){let e=[];if(Array.isArray(t)){let s=new Set(t.flat(1/0).reverse());for(let i of s)e.unshift(it(i))}else t!==void 0&&e.push(it(t));return e}static _$Eu(t,e){let s=e.attribute;return s===!1?void 0:typeof s=="string"?s:typeof t=="string"?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),this.renderRoot!==void 0&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){let t=new Map,e=this.constructor.elementProperties;for(let s of e.keys())this.hasOwnProperty(s)&&(t.set(s,this[s]),delete this[s]);t.size>0&&(this._$Ep=t)}createRenderRoot(){let t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return vt(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,s){this._$AK(t,s)}_$ET(t,e){let s=this.constructor.elementProperties.get(t),i=this.constructor._$Eu(t,s);if(i!==void 0&&s.reflect===!0){let r=(s.converter?.toAttribute!==void 0?s.converter:N).toAttribute(e,s.type);this._$Em=t,r==null?this.removeAttribute(i):this.setAttribute(i,r),this._$Em=null}}_$AK(t,e){let s=this.constructor,i=s._$Eh.get(t);if(i!==void 0&&this._$Em!==i){let r=s.getPropertyOptions(i),n=typeof r.converter=="function"?{fromAttribute:r.converter}:r.converter?.fromAttribute!==void 0?r.converter:N;this._$Em=i;let a=n.fromAttribute(e,r.type);this[i]=a??this._$Ej?.get(i)??a,this._$Em=null}}requestUpdate(t,e,s,i=!1,r){if(t!==void 0){let n=this.constructor;if(i===!1&&(r=this[t]),s??=n.getPropertyOptions(t),!((s.hasChanged??X)(r,e)||s.useDefault&&s.reflect&&r===this._$Ej?.get(t)&&!this.hasAttribute(n._$Eu(t,s))))return;this.C(t,e,s)}this.isUpdatePending===!1&&(this._$ES=this._$EP())}C(t,e,{useDefault:s,reflect:i,wrapped:r},n){s&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,n??e??this[t]),r!==!0||n!==void 0)||(this._$AL.has(t)||(this.hasUpdated||s||(e=void 0),this._$AL.set(t,e)),i===!0&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}let t=this.scheduleUpdate();return t!=null&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(let[i,r]of this._$Ep)this[i]=r;this._$Ep=void 0}let s=this.constructor.elementProperties;if(s.size>0)for(let[i,r]of s){let{wrapped:n}=r,a=this[i];n!==!0||this._$AL.has(i)||a===void 0||this.C(i,void 0,r,a)}}let t=!1,e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(s=>s.hostUpdate?.()),this.update(e)):this._$EM()}catch(s){throw t=!1,this._$EM(),s}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(e=>this._$ET(e,this[e])),this._$EM()}updated(t){}firstUpdated(t){}};y.elementStyles=[],y.shadowRootOptions={mode:"open"},y[I("elementProperties")]=new Map,y[I("finalized")]=new Map,pe?.({ReactiveElement:y}),(J.reactiveElementVersions??=[]).push("2.1.2")});function Ht(o,t){if(!dt(o)||!o.hasOwnProperty("raw"))throw Error("invalid template strings array");return At!==void 0?At.createHTML(t):t}function L(o,t,e=o,s){if(t===k)return t;let i=s!==void 0?e._$Co?.[s]:e._$Cl,r=B(t)?void 0:t._$litDirective$;return i?.constructor!==r&&(i?._$AO?.(!1),r===void 0?i=void 0:(i=new r(o),i._$AT(o,e,s)),s!==void 0?(e._$Co??=[])[s]=i:e._$Cl=i),i!==void 0&&(t=L(o,i._$AS(o,t.values),i,s)),t}var pt,wt,Q,At,Mt,b,Pt,de,E,j,B,dt,ue,rt,z,St,Ct,S,Et,kt,Lt,ut,h,Pe,Le,k,c,Tt,C,me,q,nt,K,H,at,lt,ct,ht,ge,Rt,Y=m(()=>{pt=globalThis,wt=o=>o,Q=pt.trustedTypes,At=Q?Q.createPolicy("lit-html",{createHTML:o=>o}):void 0,Mt="$lit$",b=`lit$${Math.random().toFixed(9).slice(2)}$`,Pt="?"+b,de=`<${Pt}>`,E=document,j=()=>E.createComment(""),B=o=>o===null||typeof o!="object"&&typeof o!="function",dt=Array.isArray,ue=o=>dt(o)||typeof o?.[Symbol.iterator]=="function",rt=`[ 	
-\f\r]`,z=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,St=/-->/g,Ct=/>/g,S=RegExp(`>|${rt}(?:([^\\s"'>=/]+)(${rt}*=${rt}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`,"g"),Et=/'/g,kt=/"/g,Lt=/^(?:script|style|textarea|title)$/i,ut=o=>(t,...e)=>({_$litType$:o,strings:t,values:e}),h=ut(1),Pe=ut(2),Le=ut(3),k=Symbol.for("lit-noChange"),c=Symbol.for("lit-nothing"),Tt=new WeakMap,C=E.createTreeWalker(E,129);me=(o,t)=>{let e=o.length-1,s=[],i,r=t===2?"<svg>":t===3?"<math>":"",n=z;for(let a=0;a<e;a++){let l=o[a],d,u,p=-1,_=0;for(;_<l.length&&(n.lastIndex=_,u=n.exec(l),u!==null);)_=n.lastIndex,n===z?u[1]==="!--"?n=St:u[1]!==void 0?n=Ct:u[2]!==void 0?(Lt.test(u[2])&&(i=RegExp("</"+u[2],"g")),n=S):u[3]!==void 0&&(n=S):n===S?u[0]===">"?(n=i??z,p=-1):u[1]===void 0?p=-2:(p=n.lastIndex-u[2].length,d=u[1],n=u[3]===void 0?S:u[3]==='"'?kt:Et):n===kt||n===Et?n=S:n===St||n===Ct?n=z:(n=S,i=void 0);let x=n===S&&o[a+1].startsWith("/>")?" ":"";r+=n===z?l+de:p>=0?(s.push(d),l.slice(0,p)+Mt+l.slice(p)+b+x):l+b+(p===-2?a:x)}return[Ht(o,r+(o[e]||"<?>")+(t===2?"</svg>":t===3?"</math>":"")),s]},q=class o{constructor({strings:t,_$litType$:e},s){let i;this.parts=[];let r=0,n=0,a=t.length-1,l=this.parts,[d,u]=me(t,e);if(this.el=o.createElement(d,s),C.currentNode=this.el.content,e===2||e===3){let p=this.el.content.firstChild;p.replaceWith(...p.childNodes)}for(;(i=C.nextNode())!==null&&l.length<a;){if(i.nodeType===1){if(i.hasAttributes())for(let p of i.getAttributeNames())if(p.endsWith(Mt)){let _=u[n++],x=i.getAttribute(p).split(b),W=/([.?@])?(.*)/.exec(_);l.push({type:1,index:r,name:W[2],strings:x,ctor:W[1]==="."?at:W[1]==="?"?lt:W[1]==="@"?ct:H}),i.removeAttribute(p)}else p.startsWith(b)&&(l.push({type:6,index:r}),i.removeAttribute(p));if(Lt.test(i.tagName)){let p=i.textContent.split(b),_=p.length-1;if(_>0){i.textContent=Q?Q.emptyScript:"";for(let x=0;x<_;x++)i.append(p[x],j()),C.nextNode(),l.push({type:2,index:++r});i.append(p[_],j())}}}else if(i.nodeType===8)if(i.data===Pt)l.push({type:2,index:r});else{let p=-1;for(;(p=i.data.indexOf(b,p+1))!==-1;)l.push({type:7,index:r}),p+=b.length-1}r++}}static createElement(t,e){let s=E.createElement("template");return s.innerHTML=t,s}};nt=class{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){let{el:{content:e},parts:s}=this._$AD,i=(t?.creationScope??E).importNode(e,!0);C.currentNode=i;let r=C.nextNode(),n=0,a=0,l=s[0];for(;l!==void 0;){if(n===l.index){let d;l.type===2?d=new K(r,r.nextSibling,this,t):l.type===1?d=new l.ctor(r,l.name,l.strings,this,t):l.type===6&&(d=new ht(r,this,t)),this._$AV.push(d),l=s[++a]}n!==l?.index&&(r=C.nextNode(),n++)}return C.currentNode=E,i}p(t){let e=0;for(let s of this._$AV)s!==void 0&&(s.strings!==void 0?(s._$AI(t,s,e),e+=s.strings.length-2):s._$AI(t[e])),e++}},K=class o{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,s,i){this.type=2,this._$AH=c,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=s,this.options=i,this._$Cv=i?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode,e=this._$AM;return e!==void 0&&t?.nodeType===11&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=L(this,t,e),B(t)?t===c||t==null||t===""?(this._$AH!==c&&this._$AR(),this._$AH=c):t!==this._$AH&&t!==k&&this._(t):t._$litType$!==void 0?this.$(t):t.nodeType!==void 0?this.T(t):ue(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==c&&B(this._$AH)?this._$AA.nextSibling.data=t:this.T(E.createTextNode(t)),this._$AH=t}$(t){let{values:e,_$litType$:s}=t,i=typeof s=="number"?this._$AC(t):(s.el===void 0&&(s.el=q.createElement(Ht(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===i)this._$AH.p(e);else{let r=new nt(i,this),n=r.u(this.options);r.p(e),this.T(n),this._$AH=r}}_$AC(t){let e=Tt.get(t.strings);return e===void 0&&Tt.set(t.strings,e=new q(t)),e}k(t){dt(this._$AH)||(this._$AH=[],this._$AR());let e=this._$AH,s,i=0;for(let r of t)i===e.length?e.push(s=new o(this.O(j()),this.O(j()),this,this.options)):s=e[i],s._$AI(r),i++;i<e.length&&(this._$AR(s&&s._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){let s=wt(t).nextSibling;wt(t).remove(),t=s}}setConnected(t){this._$AM===void 0&&(this._$Cv=t,this._$AP?.(t))}},H=class{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,s,i,r){this.type=1,this._$AH=c,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=r,s.length>2||s[0]!==""||s[1]!==""?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=c}_$AI(t,e=this,s,i){let r=this.strings,n=!1;if(r===void 0)t=L(this,t,e,0),n=!B(t)||t!==this._$AH&&t!==k,n&&(this._$AH=t);else{let a=t,l,d;for(t=r[0],l=0;l<r.length-1;l++)d=L(this,a[s+l],e,l),d===k&&(d=this._$AH[l]),n||=!B(d)||d!==this._$AH[l],d===c?t=c:t!==c&&(t+=(d??"")+r[l+1]),this._$AH[l]=d}n&&!i&&this.j(t)}j(t){t===c?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}},at=class extends H{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===c?void 0:t}},lt=class extends H{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==c)}},ct=class extends H{constructor(t,e,s,i,r){super(t,e,s,i,r),this.type=5}_$AI(t,e=this){if((t=L(this,t,e,0)??c)===k)return;let s=this._$AH,i=t===c&&s!==c||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,r=t!==c&&(s===c||i);i&&this.element.removeEventListener(this.name,this,s),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){typeof this._$AH=="function"?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}},ht=class{constructor(t,e,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=s}get _$AU(){return this._$AM._$AU}_$AI(t){L(this,t)}},ge=pt.litHtmlPolyfillSupport;ge?.(q,K),(pt.litHtmlVersions??=[]).push("3.3.3");Rt=(o,t,e)=>{let s=e?.renderBefore??t,i=s._$litPart$;if(i===void 0){let r=e?.renderBefore??null;s._$litPart$=i=new K(t.insertBefore(j(),r),r,void 0,e??{})}return i._$AI(o),i}});var mt,f,fe,Ot=m(()=>{D();D();Y();Y();mt=globalThis,f=class extends y{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){let t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){let e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=Rt(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return k}};f._$litElement$=!0,f.finalized=!0,mt.litElementHydrateSupport?.({LitElement:f});fe=mt.litElementPolyfillSupport;fe?.({LitElement:f});(mt.litElementVersions??=[]).push("4.2.2")});var Ut=m(()=>{});var R=m(()=>{D();Y();Ot();Ut()});var w,It=m(()=>{w=o=>(t,e)=>{e!==void 0?e.addInitializer(()=>{customElements.define(o,t)}):customElements.define(o,t)}});function $(o){return(t,e)=>typeof e=="object"?$e(o,t,e):((s,i,r)=>{let n=i.hasOwnProperty(r);return i.constructor.createProperty(r,s),n?Object.getOwnPropertyDescriptor(i,r):void 0})(o,t,e)}var _e,$e,gt=m(()=>{D();_e={attribute:!0,type:String,converter:N,reflect:!1,hasChanged:X},$e=(o=_e,t,e)=>{let{kind:s,metadata:i}=e,r=globalThis.litPropertyMetadata.get(i);if(r===void 0&&globalThis.litPropertyMetadata.set(i,r=new Map),s==="setter"&&((o=Object.create(o)).wrapped=!0),r.set(e.name,o),s==="accessor"){let{name:n}=e;return{set(a){let l=t.get.call(this);t.set.call(this,a),this.requestUpdate(n,l,o,!0,a)},init(a){return a!==void 0&&this.C(n,void 0,o,a),a}}}if(s==="setter"){let{name:n}=e;return function(a){let l=this[n];t.call(this,a),this.requestUpdate(n,l,o,!0,a)}}throw Error("Unsupported decorator location: "+s)}});function v(o){return $({...o,state:!0,attribute:!1})}var Nt=m(()=>{gt();});var Dt=m(()=>{});var O=m(()=>{});var zt=m(()=>{O();});var jt=m(()=>{O();});var Bt=m(()=>{O();});var qt=m(()=>{O();});var Kt=m(()=>{O();});var V=m(()=>{It();gt();Nt();Dt();zt();jt();Bt();qt();Kt()});var Yt={};_t(Yt,{NextEventCardEditor:()=>T});var T,Zt=m(()=>{"use strict";R();V();T=class extends f{setConfig(t){this._config=t}_selectedClass(){let t=this._config.classes;return t&&t.length===1?t[0]:"all"}_emit(t){this._config={...this._config,...t},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0}))}render(){return this._config?h`
+var At=Object.defineProperty;var ce=Object.getOwnPropertyDescriptor;var g=(i,t)=>()=>(i&&(t=i(i=0)),t);var ct=(i,t)=>{for(var e in t)At(i,e,{get:t[e],enumerable:!0})};var u=(i,t,e,s)=>{for(var n=s>1?void 0:s?ce(t,e):t,o=i.length-1,r;o>=0;o--)(r=i[o])&&(n=(s?r(t,e,n):r(n))||n);return s&&n&&At(t,e,n),n};var Z,tt,pt,Ct,j,St,B,Et,dt,ht=g(()=>{Z=globalThis,tt=Z.ShadowRoot&&(Z.ShadyCSS===void 0||Z.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,pt=Symbol(),Ct=new WeakMap,j=class{constructor(t,e,s){if(this._$cssResult$=!0,s!==pt)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o,e=this.t;if(tt&&t===void 0){let s=e!==void 0&&e.length===1;s&&(t=Ct.get(e)),t===void 0&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),s&&Ct.set(e,t))}return t}toString(){return this.cssText}},St=i=>new j(typeof i=="string"?i:i+"",void 0,pt),B=(i,...t)=>{let e=i.length===1?i[0]:t.reduce((s,n,o)=>s+(r=>{if(r._$cssResult$===!0)return r.cssText;if(typeof r=="number")return r;throw Error("Value passed to 'css' function must be a 'css' function result: "+r+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(n)+i[o+1],i[0]);return new j(e,i,pt)},Et=(i,t)=>{if(tt)i.adoptedStyleSheets=t.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(let e of t){let s=document.createElement("style"),n=Z.litNonce;n!==void 0&&s.setAttribute("nonce",n),s.textContent=e.cssText,i.appendChild(s)}},dt=tt?i=>i:i=>i instanceof CSSStyleSheet?(t=>{let e="";for(let s of t.cssRules)e+=s.cssText;return St(e)})(i):i});var pe,de,he,ue,me,ge,et,kt,fe,_e,q,K,st,Tt,x,F=g(()=>{ht();ht();({is:pe,defineProperty:de,getOwnPropertyDescriptor:he,getOwnPropertyNames:ue,getOwnPropertySymbols:me,getPrototypeOf:ge}=Object),et=globalThis,kt=et.trustedTypes,fe=kt?kt.emptyScript:"",_e=et.reactiveElementPolyfillSupport,q=(i,t)=>i,K={toAttribute(i,t){switch(t){case Boolean:i=i?fe:null;break;case Object:case Array:i=i==null?i:JSON.stringify(i)}return i},fromAttribute(i,t){let e=i;switch(t){case Boolean:e=i!==null;break;case Number:e=i===null?null:Number(i);break;case Object:case Array:try{e=JSON.parse(i)}catch{e=null}}return e}},st=(i,t)=>!pe(i,t),Tt={attribute:!0,type:String,converter:K,reflect:!1,useDefault:!1,hasChanged:st};Symbol.metadata??=Symbol("metadata"),et.litPropertyMetadata??=new WeakMap;x=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=Tt){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){let s=Symbol(),n=this.getPropertyDescriptor(t,s,e);n!==void 0&&de(this.prototype,t,n)}}static getPropertyDescriptor(t,e,s){let{get:n,set:o}=he(this.prototype,t)??{get(){return this[e]},set(r){this[e]=r}};return{get:n,set(r){let c=n?.call(this);o?.call(this,r),this.requestUpdate(t,c,s)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??Tt}static _$Ei(){if(this.hasOwnProperty(q("elementProperties")))return;let t=ge(this);t.finalize(),t.l!==void 0&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(q("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(q("properties"))){let e=this.properties,s=[...ue(e),...me(e)];for(let n of s)this.createProperty(n,e[n])}let t=this[Symbol.metadata];if(t!==null){let e=litPropertyMetadata.get(t);if(e!==void 0)for(let[s,n]of e)this.elementProperties.set(s,n)}this._$Eh=new Map;for(let[e,s]of this.elementProperties){let n=this._$Eu(e,s);n!==void 0&&this._$Eh.set(n,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){let e=[];if(Array.isArray(t)){let s=new Set(t.flat(1/0).reverse());for(let n of s)e.unshift(dt(n))}else t!==void 0&&e.push(dt(t));return e}static _$Eu(t,e){let s=e.attribute;return s===!1?void 0:typeof s=="string"?s:typeof t=="string"?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),this.renderRoot!==void 0&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){let t=new Map,e=this.constructor.elementProperties;for(let s of e.keys())this.hasOwnProperty(s)&&(t.set(s,this[s]),delete this[s]);t.size>0&&(this._$Ep=t)}createRenderRoot(){let t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return Et(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,s){this._$AK(t,s)}_$ET(t,e){let s=this.constructor.elementProperties.get(t),n=this.constructor._$Eu(t,s);if(n!==void 0&&s.reflect===!0){let o=(s.converter?.toAttribute!==void 0?s.converter:K).toAttribute(e,s.type);this._$Em=t,o==null?this.removeAttribute(n):this.setAttribute(n,o),this._$Em=null}}_$AK(t,e){let s=this.constructor,n=s._$Eh.get(t);if(n!==void 0&&this._$Em!==n){let o=s.getPropertyOptions(n),r=typeof o.converter=="function"?{fromAttribute:o.converter}:o.converter?.fromAttribute!==void 0?o.converter:K;this._$Em=n;let c=r.fromAttribute(e,o.type);this[n]=c??this._$Ej?.get(n)??c,this._$Em=null}}requestUpdate(t,e,s,n=!1,o){if(t!==void 0){let r=this.constructor;if(n===!1&&(o=this[t]),s??=r.getPropertyOptions(t),!((s.hasChanged??st)(o,e)||s.useDefault&&s.reflect&&o===this._$Ej?.get(t)&&!this.hasAttribute(r._$Eu(t,s))))return;this.C(t,e,s)}this.isUpdatePending===!1&&(this._$ES=this._$EP())}C(t,e,{useDefault:s,reflect:n,wrapped:o},r){s&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??e??this[t]),o!==!0||r!==void 0)||(this._$AL.has(t)||(this.hasUpdated||s||(e=void 0),this._$AL.set(t,e)),n===!0&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}let t=this.scheduleUpdate();return t!=null&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(let[n,o]of this._$Ep)this[n]=o;this._$Ep=void 0}let s=this.constructor.elementProperties;if(s.size>0)for(let[n,o]of s){let{wrapped:r}=o,c=this[n];r!==!0||this._$AL.has(n)||c===void 0||this.C(n,void 0,o,c)}}let t=!1,e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(s=>s.hostUpdate?.()),this.update(e)):this._$EM()}catch(s){throw t=!1,this._$EM(),s}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(e=>this._$ET(e,this[e])),this._$EM()}updated(t){}firstUpdated(t){}};x.elementStyles=[],x.shadowRootOptions={mode:"open"},x[q("elementProperties")]=new Map,x[q("finalized")]=new Map,_e?.({ReactiveElement:x}),(et.reactiveElementVersions??=[]).push("2.1.2")});function zt(i,t){if(!vt(i)||!i.hasOwnProperty("raw"))throw Error("invalid template strings array");return Lt!==void 0?Lt.createHTML(t):t}function N(i,t,e=i,s){if(t===M)return t;let n=s!==void 0?e._$Co?.[s]:e._$Cl,o=J(t)?void 0:t._$litDirective$;return n?.constructor!==o&&(n?._$AO?.(!1),o===void 0?n=void 0:(n=new o(i),n._$AT(i,e,s)),s!==void 0?(e._$Co??=[])[s]=n:e._$Cl=n),n!==void 0&&(t=N(i,n._$AS(i,t.values),n,s)),t}var yt,Mt,nt,Lt,Nt,w,Ut,$e,T,W,J,vt,ye,ut,V,It,Rt,E,Ht,Pt,Dt,bt,l,De,ze,M,a,Ot,k,ve,X,mt,G,U,gt,ft,_t,$t,be,jt,it=g(()=>{yt=globalThis,Mt=i=>i,nt=yt.trustedTypes,Lt=nt?nt.createPolicy("lit-html",{createHTML:i=>i}):void 0,Nt="$lit$",w=`lit$${Math.random().toFixed(9).slice(2)}$`,Ut="?"+w,$e=`<${Ut}>`,T=document,W=()=>T.createComment(""),J=i=>i===null||typeof i!="object"&&typeof i!="function",vt=Array.isArray,ye=i=>vt(i)||typeof i?.[Symbol.iterator]=="function",ut=`[ 	
+\f\r]`,V=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,It=/-->/g,Rt=/>/g,E=RegExp(`>|${ut}(?:([^\\s"'>=/]+)(${ut}*=${ut}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`,"g"),Ht=/'/g,Pt=/"/g,Dt=/^(?:script|style|textarea|title)$/i,bt=i=>(t,...e)=>({_$litType$:i,strings:t,values:e}),l=bt(1),De=bt(2),ze=bt(3),M=Symbol.for("lit-noChange"),a=Symbol.for("lit-nothing"),Ot=new WeakMap,k=T.createTreeWalker(T,129);ve=(i,t)=>{let e=i.length-1,s=[],n,o=t===2?"<svg>":t===3?"<math>":"",r=V;for(let c=0;c<e;c++){let p=i[c],d,m,h=-1,f=0;for(;f<p.length&&(r.lastIndex=f,m=r.exec(p),m!==null);)f=r.lastIndex,r===V?m[1]==="!--"?r=It:m[1]!==void 0?r=Rt:m[2]!==void 0?(Dt.test(m[2])&&(n=RegExp("</"+m[2],"g")),r=E):m[3]!==void 0&&(r=E):r===E?m[0]===">"?(r=n??V,h=-1):m[1]===void 0?h=-2:(h=r.lastIndex-m[2].length,d=m[1],r=m[3]===void 0?E:m[3]==='"'?Pt:Ht):r===Pt||r===Ht?r=E:r===It||r===Rt?r=V:(r=E,n=void 0);let b=r===E&&i[c+1].startsWith("/>")?" ":"";o+=r===V?p+$e:h>=0?(s.push(d),p.slice(0,h)+Nt+p.slice(h)+w+b):p+w+(h===-2?c:b)}return[zt(i,o+(i[e]||"<?>")+(t===2?"</svg>":t===3?"</math>":"")),s]},X=class i{constructor({strings:t,_$litType$:e},s){let n;this.parts=[];let o=0,r=0,c=t.length-1,p=this.parts,[d,m]=ve(t,e);if(this.el=i.createElement(d,s),k.currentNode=this.el.content,e===2||e===3){let h=this.el.content.firstChild;h.replaceWith(...h.childNodes)}for(;(n=k.nextNode())!==null&&p.length<c;){if(n.nodeType===1){if(n.hasAttributes())for(let h of n.getAttributeNames())if(h.endsWith(Nt)){let f=m[r++],b=n.getAttribute(h).split(w),S=/([.?@])?(.*)/.exec(f);p.push({type:1,index:o,name:S[2],strings:b,ctor:S[1]==="."?gt:S[1]==="?"?ft:S[1]==="@"?_t:U}),n.removeAttribute(h)}else h.startsWith(w)&&(p.push({type:6,index:o}),n.removeAttribute(h));if(Dt.test(n.tagName)){let h=n.textContent.split(w),f=h.length-1;if(f>0){n.textContent=nt?nt.emptyScript:"";for(let b=0;b<f;b++)n.append(h[b],W()),k.nextNode(),p.push({type:2,index:++o});n.append(h[f],W())}}}else if(n.nodeType===8)if(n.data===Ut)p.push({type:2,index:o});else{let h=-1;for(;(h=n.data.indexOf(w,h+1))!==-1;)p.push({type:7,index:o}),h+=w.length-1}o++}}static createElement(t,e){let s=T.createElement("template");return s.innerHTML=t,s}};mt=class{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){let{el:{content:e},parts:s}=this._$AD,n=(t?.creationScope??T).importNode(e,!0);k.currentNode=n;let o=k.nextNode(),r=0,c=0,p=s[0];for(;p!==void 0;){if(r===p.index){let d;p.type===2?d=new G(o,o.nextSibling,this,t):p.type===1?d=new p.ctor(o,p.name,p.strings,this,t):p.type===6&&(d=new $t(o,this,t)),this._$AV.push(d),p=s[++c]}r!==p?.index&&(o=k.nextNode(),r++)}return k.currentNode=T,n}p(t){let e=0;for(let s of this._$AV)s!==void 0&&(s.strings!==void 0?(s._$AI(t,s,e),e+=s.strings.length-2):s._$AI(t[e])),e++}},G=class i{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,s,n){this.type=2,this._$AH=a,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=s,this.options=n,this._$Cv=n?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode,e=this._$AM;return e!==void 0&&t?.nodeType===11&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=N(this,t,e),J(t)?t===a||t==null||t===""?(this._$AH!==a&&this._$AR(),this._$AH=a):t!==this._$AH&&t!==M&&this._(t):t._$litType$!==void 0?this.$(t):t.nodeType!==void 0?this.T(t):ye(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==a&&J(this._$AH)?this._$AA.nextSibling.data=t:this.T(T.createTextNode(t)),this._$AH=t}$(t){let{values:e,_$litType$:s}=t,n=typeof s=="number"?this._$AC(t):(s.el===void 0&&(s.el=X.createElement(zt(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===n)this._$AH.p(e);else{let o=new mt(n,this),r=o.u(this.options);o.p(e),this.T(r),this._$AH=o}}_$AC(t){let e=Ot.get(t.strings);return e===void 0&&Ot.set(t.strings,e=new X(t)),e}k(t){vt(this._$AH)||(this._$AH=[],this._$AR());let e=this._$AH,s,n=0;for(let o of t)n===e.length?e.push(s=new i(this.O(W()),this.O(W()),this,this.options)):s=e[n],s._$AI(o),n++;n<e.length&&(this._$AR(s&&s._$AB.nextSibling,n),e.length=n)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){let s=Mt(t).nextSibling;Mt(t).remove(),t=s}}setConnected(t){this._$AM===void 0&&(this._$Cv=t,this._$AP?.(t))}},U=class{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,s,n,o){this.type=1,this._$AH=a,this._$AN=void 0,this.element=t,this.name=e,this._$AM=n,this.options=o,s.length>2||s[0]!==""||s[1]!==""?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=a}_$AI(t,e=this,s,n){let o=this.strings,r=!1;if(o===void 0)t=N(this,t,e,0),r=!J(t)||t!==this._$AH&&t!==M,r&&(this._$AH=t);else{let c=t,p,d;for(t=o[0],p=0;p<o.length-1;p++)d=N(this,c[s+p],e,p),d===M&&(d=this._$AH[p]),r||=!J(d)||d!==this._$AH[p],d===a?t=a:t!==a&&(t+=(d??"")+o[p+1]),this._$AH[p]=d}r&&!n&&this.j(t)}j(t){t===a?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}},gt=class extends U{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===a?void 0:t}},ft=class extends U{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==a)}},_t=class extends U{constructor(t,e,s,n,o){super(t,e,s,n,o),this.type=5}_$AI(t,e=this){if((t=N(this,t,e,0)??a)===M)return;let s=this._$AH,n=t===a&&s!==a||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,o=t!==a&&(s===a||n);n&&this.element.removeEventListener(this.name,this,s),o&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){typeof this._$AH=="function"?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}},$t=class{constructor(t,e,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=s}get _$AU(){return this._$AM._$AU}_$AI(t){N(this,t)}},be=yt.litHtmlPolyfillSupport;be?.(X,G),(yt.litHtmlVersions??=[]).push("3.3.3");jt=(i,t,e)=>{let s=e?.renderBefore??t,n=s._$litPart$;if(n===void 0){let o=e?.renderBefore??null;s._$litPart$=n=new G(t.insertBefore(W(),o),o,void 0,e??{})}return n._$AI(i),n}});var xt,_,xe,Bt=g(()=>{F();F();it();it();xt=globalThis,_=class extends x{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){let t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){let e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=jt(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return M}};_._$litElement$=!0,_.finalized=!0,xt.litElementHydrateSupport?.({LitElement:_});xe=xt.litElementPolyfillSupport;xe?.({LitElement:_});(xt.litElementVersions??=[]).push("4.2.2")});var qt=g(()=>{});var A=g(()=>{F();it();Bt();qt()});var v,Kt=g(()=>{v=i=>(t,e)=>{e!==void 0?e.addInitializer(()=>{customElements.define(i,t)}):customElements.define(i,t)}});function $(i){return(t,e)=>typeof e=="object"?Ae(i,t,e):((s,n,o)=>{let r=n.hasOwnProperty(o);return n.constructor.createProperty(o,s),r?Object.getOwnPropertyDescriptor(n,o):void 0})(i,t,e)}var we,Ae,wt=g(()=>{F();we={attribute:!0,type:String,converter:K,reflect:!1,hasChanged:st},Ae=(i=we,t,e)=>{let{kind:s,metadata:n}=e,o=globalThis.litPropertyMetadata.get(n);if(o===void 0&&globalThis.litPropertyMetadata.set(n,o=new Map),s==="setter"&&((i=Object.create(i)).wrapped=!0),o.set(e.name,i),s==="accessor"){let{name:r}=e;return{set(c){let p=t.get.call(this);t.set.call(this,c),this.requestUpdate(r,p,i,!0,c)},init(c){return c!==void 0&&this.C(r,void 0,i,c),c}}}if(s==="setter"){let{name:r}=e;return function(c){let p=this[r];t.call(this,c),this.requestUpdate(r,p,i,!0,c)}}throw Error("Unsupported decorator location: "+s)}});function y(i){return $({...i,state:!0,attribute:!1})}var Ft=g(()=>{wt();});var Vt=g(()=>{});var D=g(()=>{});var Wt=g(()=>{D();});var Jt=g(()=>{D();});var Xt=g(()=>{D();});var Gt=g(()=>{D();});var Qt=g(()=>{D();});var L=g(()=>{Kt();wt();Ft();Vt();Wt();Jt();Xt();Gt();Qt()});var ee={};ct(ee,{NextEventCardEditor:()=>I});var I,se=g(()=>{"use strict";A();L();I=class extends _{setConfig(t){this._config=t}_selectedClass(){let t=this._config.classes;return t&&t.length===1?t[0]:"all"}_emit(t){this._config={...this._config,...t},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0}))}render(){return this._config?l`
       <div style="display:flex;flex-direction:column;gap:12px;padding:8px;">
         <label>
           Entity
@@ -44,7 +44,7 @@ var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=
           Show live countdown
         </label>
       </div>
-    `:c}};g([$({attribute:!1})],T.prototype,"hass",2),g([v()],T.prototype,"_config",2),T=g([w("motogp-next-event-card-editor")],T)});var te={};_t(te,{ResultsCardEditor:()=>P});var be,P,ee=m(()=>{"use strict";R();V();be=["motogp","moto2","moto3"],P=class extends f{setConfig(t){this._config=t}_emit(t){this._config={...this._config,...t},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0}))}render(){if(!this._config)return c;let t=this._config.default_class??"motogp";return h`
+    `:a}};u([$({attribute:!1})],I.prototype,"hass",2),u([y()],I.prototype,"_config",2),I=u([v("motogp-next-event-card-editor")],I)});var ne={};ct(ne,{ResultsCardEditor:()=>H});var ke,H,ie=g(()=>{"use strict";A();L();ke=["motogp","moto2","moto3"],H=class extends _{setConfig(t){this._config=t}_emit(t){this._config={...this._config,...t},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0}))}render(){if(!this._config)return a;let t=this._config.default_class??"motogp";return l`
       <div style="display:flex;flex-direction:column;gap:12px;padding:8px;">
         <label>
           Title (optional)
@@ -54,7 +54,7 @@ var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=
         <label>
           Default class
           <select @change=${e=>this._emit({default_class:e.target.value})}>
-            ${be.map(e=>h`<option value=${e} ?selected=${e===t}>${e}</option>`)}
+            ${ke.map(e=>l`<option value=${e} ?selected=${e===t}>${e}</option>`)}
           </select>
         </label>
         <label>
@@ -73,7 +73,48 @@ var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=
           Show race weather
         </label>
       </div>
-    `}};g([$({attribute:!1})],P.prototype,"hass",2),g([v()],P.prototype,"_config",2),P=g([w("motogp-results-card-editor")],P)});R();V();R();var tt=st`
+    `}};u([$({attribute:!1})],H.prototype,"hass",2),u([y()],H.prototype,"_config",2),H=u([v("motogp-results-card-editor")],H)});var re={};ct(re,{LiveSessionCardEditor:()=>P});var P,ae=g(()=>{"use strict";A();L();P=class extends _{setConfig(t){this._config=t}_selectedClass(){let t=this._config.classes;return t&&t.length===1?t[0]:"all"}_emit(t){this._config={...this._config,...t},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0}))}render(){return this._config?l`
+      <div style="display:flex;flex-direction:column;gap:12px;padding:8px;">
+        <label>
+          Entity
+          <input
+            .value=${this._config.entity??"binary_sensor.motogp_session_live"}
+            @change=${t=>this._emit({entity:t.target.value})}
+          />
+        </label>
+        <label>
+          Schedule entity
+          <input
+            .value=${this._config.schedule_entity??"sensor.motogp_next_event"}
+            @change=${t=>this._emit({schedule_entity:t.target.value})}
+          />
+        </label>
+        <label>
+          Title (optional)
+          <input
+            .value=${this._config.title??""}
+            @change=${t=>this._emit({title:t.target.value||void 0})}
+          />
+        </label>
+        <label>
+          Classes
+          <select
+            .value=${this._selectedClass()}
+            @change=${t=>{let e=t.target.value;this._emit({classes:e==="all"?void 0:[e]})}}
+          >
+            <option value="all">All classes</option>
+            <option value="MGP">MotoGP only</option>
+            <option value="MT2">Moto2 only</option>
+            <option value="MT3">Moto3 only</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" .checked=${this._config.show_upcoming!==!1}
+            @change=${t=>this._emit({show_upcoming:t.target.checked})} />
+          Show upcoming sessions
+        </label>
+      </div>
+    `:a}};u([$({attribute:!1})],P.prototype,"hass",2),u([y()],P.prototype,"_config",2),P=u([v("motogp-live-session-card-editor")],P)});A();L();A();var z=B`
   :host {
     --mgp-gap: 12px;
     --mgp-red: #e2001a;
@@ -233,6 +274,24 @@ var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=
     padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--divider-color);
   }
   table.standings td.pts, table.standings th.pts { text-align: right; }
+  table.standings td.num, table.standings th.num {
+    text-align: right;
+    color: var(--secondary-text-color);
+    width: 2.2rem;
+  }
+  .chg {
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-left: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .chg.up { color: #2e9e4f; }
+  .chg.down { color: var(--mgp-red); }
+  .records {
+    color: var(--secondary-text-color);
+    font-size: 0.85rem;
+    margin: 2px 0 8px;
+  }
   .podium-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
   .podium-row .medal {
     flex: 0 0 auto;
@@ -268,86 +327,192 @@ var ft=Object.defineProperty;var ie=Object.getOwnPropertyDescriptor;var m=(o,t)=
     font-size: 0.85rem; border: none;
   }
   .tab[aria-selected="true"] { background: var(--primary-color); color: #fff; }
-`;function Vt(o,t=new Date){let e=new Date(o).getTime();if(Number.isNaN(e))return"";let s=e-t.getTime();if(s<=0)return"Race weekend under way";let i=Math.floor(s/1e3),r=Math.floor(i/86400),n=Math.floor(i%86400/3600),a=Math.floor(i%3600/60),l=i%60,d=u=>String(u).padStart(2,"0");return r>0?`In ${r}d ${d(n)}:${d(a)}:${d(l)}`:`In ${d(n)}:${d(a)}:${d(l)}`}function Wt(o,t){if(!t||t.length===0)return o.slice();let e=new Set(t);return o.filter(s=>e.has(s.class))}function Ft(o,t="en",e){let s=new Intl.DateTimeFormat(t,{weekday:"long",day:"numeric",month:"long",...e?{timeZone:e}:{}}),i=[],r;for(let n of o){let a=s.format(new Date(n.start));(!r||r.label!==a)&&(r={label:a,items:[]},i.push(r)),r.items.push(n)}return i}function Gt(o,t=new Date){let e=t.getTime();return o.findIndex(s=>new Date(s.start).getTime()>=e)}var Xt={MGP:"#e2001a",MT2:"#0090d4",MT3:"#00a651"},ye={ducati:"#cc0000",aprilia:"#0a0a5e",ktm:"#ff6600",gasgas:"#cc0000",honda:"#003da5",yamaha:"#0a3d91",vr46:"#ffcf00",gresini:"#00a0d6",trackhouse:"#1a1a1a",tech3:"#0091d0",pramac:"#6a1b9a",lcr:"#e30613"},Jt="#8a8a8a";function Qt(o,t){if(!o)return Jt;let e=o.toLowerCase(),s=[t??{},ye];for(let i of s)for(let r of Object.keys(i))if(e.includes(r.toLowerCase()))return i[r];return Jt}var ve={RACE:"\u{1F3C1}",SPRINT:"\u26A1"};function xe(o){if(!o||o.length!==2)return"";let t=127462;return String.fromCodePoint(...[...o.toUpperCase()].map(e=>t+e.charCodeAt(0)-65))}var M=class extends f{static getStubConfig(){return{type:"custom:motogp-next-event-card",entity:"sensor.motogp_next_event"}}static async getConfigElement(){return await Promise.resolve().then(()=>(Zt(),Yt)),document.createElement("motogp-next-event-card-editor")}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={entity:"sensor.motogp_next_event",show_circuit:!0,show_track_map:!0,show_countdown:!0,...t}}getCardSize(){return 6}connectedCallback(){super.connectedCallback(),this._timer=window.setInterval(()=>this.requestUpdate(),1e3)}disconnectedCallback(){super.disconnectedCallback(),this._timer&&window.clearInterval(this._timer)}render(){if(!this._config||!this.hass)return c;let t=this.hass.states[this._config.entity??"sensor.motogp_next_event"];if(!t||t.state==="unavailable"||t.state==="unknown")return h`<ha-card><div class="body"><div class="empty">MotoGP next-event sensor unavailable.</div></div></ha-card>`;let e=t.attributes,s=e.circuit_info??{},i=e.name??"Next Grand Prix",r=this._config.show_countdown!==!1&&e.date_start?Vt(e.date_start):"",n=Wt(e.schedule??[],this._config.classes),a=Gt(n),l=Ft(n,this.hass.locale?.language),d=0;return h`
+`;function Q(i){if(!i||i.length!==2)return"";let t=127462;return String.fromCodePoint(...[...i.toUpperCase()].map(e=>t+e.charCodeAt(0)-65))}function rt(i,t=new Date){let e=new Date(i).getTime();if(Number.isNaN(e))return"";let s=e-t.getTime();if(s<=0)return"Race weekend under way";let n=Math.floor(s/1e3),o=Math.floor(n/86400),r=Math.floor(n%86400/3600),c=Math.floor(n%3600/60),p=n%60,d=m=>String(m).padStart(2,"0");return o>0?`In ${o}d ${d(r)}:${d(c)}:${d(p)}`:`In ${d(r)}:${d(c)}:${d(p)}`}function at(i,t){if(!t||t.length===0)return i.slice();let e=new Set(t);return i.filter(s=>e.has(s.class))}function Yt(i,t="en",e){let s=new Intl.DateTimeFormat(t,{weekday:"long",day:"numeric",month:"long",...e?{timeZone:e}:{}}),n=[],o;for(let r of i){let c=s.format(new Date(r.start));(!o||o.label!==c)&&(o={label:c,items:[]},n.push(o)),o.items.push(r)}return n}function lt(i,t=new Date){let e=t.getTime();return i.findIndex(s=>new Date(s.start).getTime()>=e)}var Y={MGP:"#e2001a",MT2:"#0090d4",MT3:"#00a651"},Ce={ducati:"#cc0000",aprilia:"#0a0a5e",ktm:"#ff6600",gasgas:"#cc0000",honda:"#003da5",yamaha:"#0a3d91",vr46:"#ffcf00",gresini:"#00a0d6",trackhouse:"#1a1a1a",tech3:"#0091d0",pramac:"#6a1b9a",lcr:"#e30613"},Zt="#8a8a8a";function te(i,t){if(!i)return Zt;let e=i.toLowerCase(),s=[t??{},Ce];for(let n of s)for(let o of Object.keys(n))if(e.includes(o.toLowerCase()))return n[o];return Zt}var Se={RACE:"\u{1F3C1}",SPRINT:"\u26A1"};function Ee(i,t){if(!t)return"";let e=i==="SPRINT"?t.sprint_num_laps:t.num_laps,s=[];return e&&s.push(`${e} laps`),i==="RACE"&&t.distance_km&&s.push(`${t.distance_km} km`),s.join(" \xB7 ")}var R=class extends _{static getStubConfig(){return{type:"custom:motogp-next-event-card",entity:"sensor.motogp_next_event"}}static async getConfigElement(){return await Promise.resolve().then(()=>(se(),ee)),document.createElement("motogp-next-event-card-editor")}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={entity:"sensor.motogp_next_event",show_circuit:!0,show_track_map:!0,show_countdown:!0,...t}}getCardSize(){return 6}connectedCallback(){super.connectedCallback(),this._timer=window.setInterval(()=>this.requestUpdate(),1e3)}disconnectedCallback(){super.disconnectedCallback(),this._timer&&window.clearInterval(this._timer)}render(){if(!this._config||!this.hass)return a;let t=this.hass.states[this._config.entity??"sensor.motogp_next_event"];if(!t||t.state==="unavailable"||t.state==="unknown")return l`<ha-card><div class="body"><div class="empty">MotoGP next-event sensor unavailable.</div></div></ha-card>`;let e=t.attributes,s=e.circuit_info??{},n=e.name??"Next Grand Prix",o=this._config.show_countdown!==!1&&e.date_start?rt(e.date_start):"",r=at(e.schedule??[],this._config.classes),c=lt(r),p=Yt(r,this.hass.locale?.language),d=e.race_info??{},m=0;return l`
       <ha-card class="event">
-        ${this._config.title?h`<div class="title">${this._config.title}</div>`:c}
+        ${this._config.title?l`<div class="title">${this._config.title}</div>`:a}
         <div class="hero">
-          <span class="flag">${xe(s.country_code)}</span>
-          <span class="hero-name">${i}</span>
-          ${r?h`<span class="countdown">${r}</span>`:c}
+          <span class="flag">${Q(s.country_code)}</span>
+          <span class="hero-name">${n}</span>
+          ${o?l`<span class="countdown">${o}</span>`:a}
         </div>
         <div class="body">
           <div class="sub">
             📍 ${e.circuit??""}${e.city?`, ${e.city}`:""}
           </div>
-          ${this._config.show_circuit!==!1?this._circuit(s):c}
-          ${this._config.show_track_map!==!1&&s.track_map?h`<img
+          ${this._config.show_circuit!==!1?this._circuit(s):a}
+          ${this._config.show_track_map!==!1&&s.track_map?l`<img
                 class="track-map"
                 src=${s.track_map}
                 alt="${e.circuit??"Circuit"} layout"
                 loading="lazy"
-              />`:c}
-          ${n.length===0?h`<div class="empty">Schedule not available yet.</div>`:l.map(u=>h`
-                  <div class="day">${u.label}</div>
-                  ${u.items.map(p=>{let _=d++===a;return h`
-                      <div class="row ${_?"next":""}">
+              />`:a}
+          ${r.length===0?l`<div class="empty">Schedule not available yet.</div>`:p.map(h=>l`
+                  <div class="day">${h.label}</div>
+                  ${h.items.map(f=>{let b=m++===c,S=Ee(f.kind,d[f.class]);return l`
+                      <div class="row ${b?"next":""}">
                         <span class="time">
-                          ${new Date(p.start).toLocaleTimeString(this.hass.locale?.language,{hour:"2-digit",minute:"2-digit"})}
+                          ${new Date(f.start).toLocaleTimeString(this.hass.locale?.language,{hour:"2-digit",minute:"2-digit"})}
                         </span>
-                        <span class="chip" style="background:${Xt[p.class]}"
-                          >${p.class}</span
+                        <span class="chip" style="background:${Y[f.class]}"
+                          >${f.class}</span
                         >
                         <span class="session">
-                          ${ve[p.kind]??""} ${p.session}
-                          ${_?h`<span class="next-tag">NEXT</span>`:c}
+                          ${Se[f.kind]??""} ${f.session}
+                          ${S?l`<span class="pill">${S}</span>`:a}
+                          ${f.has_live?l`<span title="Live broadcast">📺</span>`:a}
+                          ${b?l`<span class="next-tag">NEXT</span>`:a}
                         </span>
                       </div>
                     `})}
                 `)}
         </div>
       </ha-card>
-    `}_circuit(t){let e=[];return t.length_km&&e.push(`${t.length_km} km`),t.corners&&e.push(`${t.corners} corners (${t.left_corners??0}L/${t.right_corners??0}R)`),t.longest_straight_m&&e.push(`${t.longest_straight_m} m straight`),t.width_m&&e.push(`${t.width_m} m wide`),t.designer&&e.push(`${t.designer}`),t.constructed&&e.push(`Built ${t.constructed}`),e.length===0?c:h`<div class="pills">${e.map(s=>h`<span class="pill">${s}</span>`)}</div>`}};M.styles=tt,g([$({attribute:!1})],M.prototype,"hass",2),g([v()],M.prototype,"_config",2),M=g([w("motogp-next-event-card")],M);R();V();var we={motogp:"MotoGP",moto2:"Moto2",moto3:"Moto3"},Ae={1:"\u{1F947}",2:"\u{1F948}",3:"\u{1F949}"};function Se(o){let t=(o??"").toLowerCase();return t.includes("rain")||t.includes("wet")?"\u{1F327}\uFE0F":t.includes("storm")||t.includes("thunder")?"\u26C8\uFE0F":t.includes("partly")?"\u26C5":t.includes("cloud")||t.includes("overcast")?"\u2601\uFE0F":t.includes("sun")||t.includes("clear")||t.includes("fair")?"\u2600\uFE0F":"\u{1F321}\uFE0F"}function se(o){let t=[];return o.position===1&&o.time?t.push(o.time):o.gap&&o.gap!=="0.000"&&t.push(`+${o.gap}s`),o.average_speed&&t.push(`${o.average_speed} km/h`),t.join(" \xB7 ")}var A=class extends f{constructor(){super(...arguments);this._selected="motogp"}static getStubConfig(){return{type:"custom:motogp-results-card"}}static async getConfigElement(){return await Promise.resolve().then(()=>(ee(),te)),document.createElement("motogp-results-card-editor")}setConfig(e){if(!e)throw new Error("Invalid configuration");this._config={classes:["motogp","moto2","moto3"],show_standings:!0,show_podium:!0,show_weather:!0,default_class:"motogp",...e},this._selected=this._config.default_class??"motogp"}getCardSize(){return 6}render(){if(!this._config||!this.hass)return c;let e=this._config.classes??["motogp","moto2","moto3"],s=this._selected;return h`
+    `}_circuit(t){let e=[];return t.length_km&&e.push(`${t.length_km} km`),t.corners&&e.push(`${t.corners} corners (${t.left_corners??0}L/${t.right_corners??0}R)`),t.longest_straight_m&&e.push(`${t.longest_straight_m} m straight`),t.width_m&&e.push(`${t.width_m} m wide`),t.designer&&e.push(`${t.designer}`),t.constructed&&e.push(`Built ${t.constructed}`),e.length===0?a:l`<div class="pills">${e.map(s=>l`<span class="pill">${s}</span>`)}</div>`}};R.styles=z,u([$({attribute:!1})],R.prototype,"hass",2),u([y()],R.prototype,"_config",2),R=u([v("motogp-next-event-card")],R);A();L();var Te={motogp:"MotoGP",moto2:"Moto2",moto3:"Moto3"},Me={1:"\u{1F947}",2:"\u{1F948}",3:"\u{1F949}"};function Le(i){let t=(i??"").toLowerCase();return t.includes("rain")||t.includes("wet")?"\u{1F327}\uFE0F":t.includes("storm")||t.includes("thunder")?"\u26C8\uFE0F":t.includes("partly")?"\u26C5":t.includes("cloud")||t.includes("overcast")?"\u2601\uFE0F":t.includes("sun")||t.includes("clear")||t.includes("fair")?"\u2600\uFE0F":"\u{1F321}\uFE0F"}function oe(i){let t=[];return i.position===1&&i.time?t.push(i.time):i.laps_down&&Number(i.laps_down)>0?t.push(`+${i.laps_down} lap`):i.gap&&i.gap!=="0.000"&&t.push(`+${i.gap}s`),i.average_speed&&t.push(`${i.average_speed} km/h`),t.join(" \xB7 ")}function Ie(i){let t=Number(i);return!Number.isFinite(t)||t===0?"":t>0?`\u25B2${t}`:`\u25BC${Math.abs(t)}`}function Re(i){let t=i?.pole,e=i?.fastest_lap;if(!t&&!e)return a;let s=[];return t?.rider&&s.push(`\u{1F3C1} Pole ${t.rider}${t.time?` ${t.time}`:""}`),e?.rider&&s.push(`\u26A1 FL ${e.rider}${e.time?` ${e.time}`:""}`),l`<div class="records">${s.join(" \xB7 ")}</div>`}var C=class extends _{constructor(){super(...arguments);this._selected="motogp"}static getStubConfig(){return{type:"custom:motogp-results-card"}}static async getConfigElement(){return await Promise.resolve().then(()=>(ie(),ne)),document.createElement("motogp-results-card-editor")}setConfig(e){if(!e)throw new Error("Invalid configuration");this._config={classes:["motogp","moto2","moto3"],show_standings:!0,show_podium:!0,show_weather:!0,default_class:"motogp",...e},this._selected=this._config.default_class??"motogp"}getCardSize(){return 6}render(){if(!this._config||!this.hass)return a;let e=this._config.classes??["motogp","moto2","moto3"],s=this._selected;return l`
       <ha-card>
-        ${this._config.title?h`<div class="title">${this._config.title}</div>`:c}
+        ${this._config.title?l`<div class="title">${this._config.title}</div>`:a}
         <div class="tabs" role="tablist">
-          ${e.map(i=>h`<button
+          ${e.map(n=>l`<button
               class="tab" role="tab"
-              aria-selected=${i===s?"true":"false"}
-              @click=${()=>this._selected=i}
-            >${we[i]}</button>`)}
+              aria-selected=${n===s?"true":"false"}
+              @click=${()=>this._selected=n}
+            >${Te[n]}</button>`)}
         </div>
-        ${this._config.show_standings!==!1?this._standings(s):c}
-        ${this._config.show_podium!==!1?this._podium(s):c}
+        ${this._config.show_standings!==!1?this._standings(s):a}
+        ${this._config.show_podium!==!1?this._podium(s):a}
       </ha-card>
-    `}_standings(e){let i=this.hass.states[`sensor.motogp_${e}_standings`]?.attributes?.standings??[];return i.length===0?h`<div class="empty">No standings.</div>`:h`
+    `}_standings(e){let n=this.hass.states[`sensor.motogp_${e}_standings`]?.attributes?.standings??[];return n.length===0?l`<div class="empty">No standings.</div>`:l`
       <table class="standings">
-        <tr><th>#</th><th>Rider</th><th class="pts">Pts</th></tr>
-        ${i.map(r=>h`<tr>
-            <td>${r.position}</td>
-            <td class="rider-cell">
-              ${r.photo?h`<img class="rider-photo" src=${r.photo} alt="" loading="lazy" />`:c}
-              <span>${r.rider}</span>
+        <tr>
+          <th>#</th><th>Rider</th>
+          <th class="num" title="Wins">W</th>
+          <th class="num" title="Podiums">P</th>
+          <th class="pts">Pts</th>
+        </tr>
+        ${n.map(o=>{let r=Ie(o.position_change);return l`<tr>
+            <td>
+              ${o.position}
+              ${r?l`<span class="chg ${Number(o.position_change)>0?"up":"down"}">${r}</span>`:a}
             </td>
-            <td class="pts"><strong>${r.points}</strong></td>
-          </tr>`)}
+            <td class="rider-cell">
+              ${o.photo?l`<img class="rider-photo" src=${o.photo} alt="" loading="lazy" />`:a}
+              <span>${o.country_code?l`${Q(o.country_code)} `:a}${o.rider}</span>
+            </td>
+            <td class="num">${o.race_wins??0}</td>
+            <td class="num">${o.podiums??0}</td>
+            <td class="pts"><strong>${o.points}</strong></td>
+          </tr>`})}
       </table>
-    `}_podium(e){let i=this.hass.states[`sensor.motogp_${e}_latest_result`]?.attributes,r=i?.podium??[];if(r.length===0)return c;let n=i.weather;return h`
-      <div class="day">${i.event??"Latest result"}</div>
-      ${this._config.show_weather!==!1&&n?h`<div class="weather">
-            ${Se(n.weather)} ${n.weather??""}
-            ${n.track?h`· Track ${n.track}`:c}
-            ${n.air?h`· Air ${n.air}`:c}
-            ${n.ground?h`· Ground ${n.ground}`:c}
-          </div>`:c}
-      ${r.map(a=>h`<div class="podium-row">
-          <span class="swatch" style="background:${Qt(a.team,this._config.team_colors)}"></span>
-          <span class="medal">${Ae[a.position]??a.position}</span>
-          ${a.photo?h`<img class="rider-photo" src=${a.photo} alt="" loading="lazy" />`:c}
+    `}_podium(e){let n=this.hass.states[`sensor.motogp_${e}_latest_result`]?.attributes,o=n?.podium??[];if(o.length===0)return a;let r=n.weather;return l`
+      <div class="day">${n.event??"Latest result"}</div>
+      ${this._config.show_weather!==!1&&r?l`<div class="weather">
+            ${Le(r.weather)} ${r.weather??""}
+            ${r.track?l`· Track ${r.track}`:a}
+            ${r.air?l`· Air ${r.air}`:a}
+            ${r.ground?l`· Ground ${r.ground}`:a}
+          </div>`:a}
+      ${Re(n)}
+      ${o.map(c=>l`<div class="podium-row">
+          <span class="swatch" style="background:${te(c.team,this._config.team_colors)}"></span>
+          <span class="medal">${Me[c.position]??c.position}</span>
+          ${c.photo?l`<img class="rider-photo" src=${c.photo} alt="" loading="lazy" />`:a}
           <div class="podium-text">
-            <strong class="podium-name">${a.rider}</strong>
+            <strong class="podium-name">${c.country_code?l`${Q(c.country_code)} `:a}${c.rider}</strong>
             <span class="sub">
-              ${a.team??""}${se(a)?h` — ${se(a)}`:c}
+              ${c.team??""}${oe(c)?l` — ${oe(c)}`:a}
             </span>
           </div>
         </div>`)}
-    `}};A.styles=tt,g([$({attribute:!1})],A.prototype,"hass",2),g([v()],A.prototype,"_config",2),g([v()],A.prototype,"_selected",2),A=g([w("motogp-results-card")],A);window.customCards=window.customCards??[];window.customCards.push({type:"motogp-next-event-card",name:"MotoGP Next Event",description:"Circuit data and the full weekend schedule for all three classes."},{type:"motogp-results-card",name:"MotoGP Results",description:"Championship standings and the latest podium, per class."});
+    `}};C.styles=z,u([$({attribute:!1})],C.prototype,"hass",2),u([y()],C.prototype,"_config",2),u([y()],C.prototype,"_selected",2),C=u([v("motogp-results-card")],C);A();L();var le={RACE:"\u{1F3C1}",SPRINT:"\u26A1"},O=class extends _{static getStubConfig(){return{type:"custom:motogp-live-session-card",entity:"binary_sensor.motogp_session_live"}}static async getConfigElement(){return await Promise.resolve().then(()=>(ae(),re)),document.createElement("motogp-live-session-card-editor")}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={entity:"binary_sensor.motogp_session_live",schedule_entity:"sensor.motogp_next_event",show_upcoming:!0,...t}}getCardSize(){return 4}connectedCallback(){super.connectedCallback(),this._timer=window.setInterval(()=>this.requestUpdate(),1e3)}disconnectedCallback(){super.disconnectedCallback(),this._timer&&window.clearInterval(this._timer)}render(){if(!this._config||!this.hass)return a;let t=this.hass.states[this._config.entity??"binary_sensor.motogp_session_live"];if(!t||t.state==="unavailable"||t.state==="unknown")return l`<ha-card><div class="empty">MotoGP session-live sensor unavailable.</div></ha-card>`;let e=t.state==="on",s=t.attributes.live_session,n=t.attributes.next_session;return l`
+      <ha-card>
+        ${this._config.title?l`<div class="title">${this._config.title}</div>`:a}
+        <div class="live-head">
+          ${e?l`<span class="badge on"><span class="dot"></span>LIVE</span>`:l`<span class="badge off"><span class="dot"></span>OFF AIR</span>`}
+        </div>
+        ${e&&s?this._focus(s,null):n?this._focus(n,n.start):l`<div class="empty">No upcoming session scheduled.</div>`}
+        ${this._config.show_upcoming!==!1?this._upcoming():a}
+      </ha-card>
+    `}_focus(t,e){let s=e?rt(e):"",n=t.num_laps?`${t.num_laps} laps`:"",o=[t.class_name,n].filter(Boolean).join(" \xB7 ");return l`
+      <div class="focus">
+        <span class="chip" style="background:${Y[t.class]}">${t.class}</span>
+        <div>
+          <div class="name">${le[t.kind]??""} ${t.session}</div>
+          ${o?l`<div class="meta">${o}</div>`:a}
+        </div>
+        ${s?l`<span class="cd">${s}</span>`:a}
+      </div>
+    `}_upcoming(){let e=this.hass.states[this._config.schedule_entity??"sensor.motogp_next_event"]?.attributes?.schedule??[],s=at(e,this._config.classes),n=lt(s);if(n<0)return a;let o=s.slice(n,n+4);return o.length===0?a:l`
+      <div class="day">Upcoming</div>
+      ${o.map(r=>l`
+          <div class="row">
+            <span class="time">
+              ${new Date(r.start).toLocaleTimeString(this.hass.locale?.language,{hour:"2-digit",minute:"2-digit"})}
+            </span>
+            <span class="chip" style="background:${Y[r.class]}">${r.class}</span>
+            <span class="session">
+              ${le[r.kind]??""} ${r.session}
+              ${r.num_laps?l`<span class="pill">${r.num_laps} laps</span>`:a}
+              ${r.has_live||r.has_on_demand?l`<span title="Broadcast">📺</span>`:a}
+            </span>
+          </div>
+        `)}
+    `}};O.styles=[z,B`
+      .live-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-weight: 800;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        border-radius: 999px;
+        padding: 4px 12px;
+      }
+      .badge.on {
+        color: #fff;
+        background: var(--mgp-red);
+      }
+      .badge.off {
+        color: var(--secondary-text-color);
+        background: var(--secondary-background-color);
+        border: 1px solid var(--divider-color);
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #fff;
+      }
+      .badge.on .dot {
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.35; transform: scale(0.7); }
+      }
+      .focus {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0 4px;
+      }
+      .focus .name {
+        font-weight: 700;
+        color: var(--primary-text-color);
+      }
+      .focus .meta {
+        color: var(--secondary-text-color);
+        font-size: 0.85rem;
+      }
+      .focus .cd {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        color: var(--mgp-red);
+        white-space: nowrap;
+      }
+    `],u([$({attribute:!1})],O.prototype,"hass",2),u([y()],O.prototype,"_config",2),O=u([v("motogp-live-session-card")],O);window.customCards=window.customCards??[];window.customCards.push({type:"motogp-next-event-card",name:"MotoGP Next Event",description:"Circuit data and the full weekend schedule for all three classes."},{type:"motogp-results-card",name:"MotoGP Results",description:"Championship standings and the latest podium, per class."},{type:"motogp-live-session-card",name:"MotoGP Live Session",description:"Shows whether a session is live now, the next session countdown, and what's coming up."});
