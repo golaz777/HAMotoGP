@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.6.1] - 2026-07-15
+
+### Fixed
+- **Podium result rows.** Rider names no longer break mid-name — each row now stacks the name over
+  the team/gap/speed description, and the podium rider photos are larger (44px).
+
 ## [0.6.0] - 2026-07-14
 
 ### Added

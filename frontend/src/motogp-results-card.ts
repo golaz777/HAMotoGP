@@ -127,14 +127,16 @@ export class MotoGPResultsCard extends LitElement {
       ${podium.map(
         (r: any) => html`<div class="podium-row">
           <span class="swatch" style="background:${colorForTeam(r.team, this._config.team_colors)}"></span>
-          <span>${MEDALS[r.position] ?? r.position}</span>
+          <span class="medal">${MEDALS[r.position] ?? r.position}</span>
           ${r.photo
             ? html`<img class="rider-photo" src=${r.photo} alt="" loading="lazy" />`
             : nothing}
-          <strong>${r.rider}</strong>
-          <span class="sub">
-            ${r.team ?? ""}${resultMeta(r) ? html` — ${resultMeta(r)}` : nothing}
-          </span>
+          <div class="podium-text">
+            <strong class="podium-name">${r.rider}</strong>
+            <span class="sub">
+              ${r.team ?? ""}${resultMeta(r) ? html` — ${resultMeta(r)}` : nothing}
+            </span>
+          </div>
         </div>`,
       )}
     `;
