@@ -11,7 +11,11 @@ from .api import MotoGPApiClient
 from .coordinator import MotoGPDataUpdateCoordinator
 from .frontend_registration import async_register_frontend
 
-PLATFORMS: list[Platform] = [Platform.CALENDAR, Platform.SENSOR]
+PLATFORMS: list[Platform] = [
+    Platform.BINARY_SENSOR,
+    Platform.CALENDAR,
+    Platform.SENSOR,
+]
 
 type MotoGPConfigEntry = ConfigEntry[MotoGPDataUpdateCoordinator]
 

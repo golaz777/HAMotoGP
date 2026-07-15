@@ -29,6 +29,9 @@
     "sensor": {
       "next_event": { "name": "Next event" }
     },
+    "binary_sensor": {
+      "session_live": { "name": "Session live" }
+    },
     "calendar": {
       "calendar": { "name": "Calendar" }
     }

@@ -141,10 +141,37 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     "sessions": self._parse_sessions(
                         event.get("broadcasts") or [], selected_acronyms
                     ),
+                    "race_info": self._parse_race_info(event, selected_acronyms),
                 }
             )
         parsed.sort(key=lambda e: e["date_start"])
         return parsed
+
+    @staticmethod
+    def _parse_race_info(
+        event: dict[str, Any], selected_acronyms: set[str]
+    ) -> dict[str, dict[str, Any]]:
+        """Race distance / lap counts per selected class, keyed by acronym.
+
+        ``event_categories`` keys each class by its category UUID; the event's
+        ``categories`` list maps that UUID to the ``acronym`` used elsewhere.
+        """
+        acronym_by_id = {
+            c.get("id"): c.get("acronym") for c in event.get("categories") or []
+        }
+        info: dict[str, dict[str, Any]] = {}
+        for cat in event.get("event_categories") or []:
+            acronym = acronym_by_id.get(cat.get("category_id"))
+            if not acronym or (selected_acronyms and acronym not in selected_acronyms):
+                continue
+            distance = cat.get("distance") or {}
+            info[acronym] = {
+                "num_laps": _to_int(cat.get("num_laps")),
+                "sprint_num_laps": _to_int(cat.get("sprint_num_laps")),
+                "distance_km": _to_float(distance.get("kiloMeters")),
+                "distance_miles": _to_float(distance.get("miles")),
+            }
+        return info
 
     @staticmethod
     def _parse_circuit(circuit: dict[str, Any]) -> dict[str, Any]:
@@ -177,6 +204,8 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             "country_code": circuit.get("iso_code"),
             "designer": circuit.get("designer"),
             "constructed": circuit.get("constructed"),
+            "capacity": _to_int(circuit.get("capacity")),
+            "region": circuit.get("region"),
             "lat": _to_float(circuit.get("lat")),
             "lng": _to_float(circuit.get("lng")),
             "length_m": length_m,
@@ -214,6 +243,10 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     "name": (bc.get("name") or "").strip(),
                     "start": start,
                     "end": _parse_dt(bc.get("date_end")),
+                    "num_laps": _to_int(bc.get("num_laps")),
+                    "has_live": bc.get("has_live"),
+                    "has_on_demand": bc.get("has_on_demand"),
+                    "gp_day": bc.get("gp_day"),
                 }
             )
         sessions.sort(key=lambda s: s["start"] or dt_util.utcnow())
@@ -257,15 +290,21 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         ``photo`` is filled in later by :meth:`_attach_rider_photos`.
         """
         rider = r.get("rider") or {}
+        country = rider.get("country") or {}
+        gap = r.get("gap") or {}
         return {
             "position": r.get("position"),
             "rider": rider.get("full_name"),
             "number": rider.get("number"),
+            "country": country.get("name"),
+            "country_code": country.get("iso"),
             "team": (r.get("team") or {}).get("name"),
             "constructor": (r.get("constructor") or {}).get("name"),
             "points": r.get("points"),
             "time": r.get("time"),
-            "gap": (r.get("gap") or {}).get("first"),
+            "gap": gap.get("first"),
+            "laps_down": gap.get("lap"),
+            "total_laps": r.get("total_laps"),
             "average_speed": r.get("average_speed"),
             "status": r.get("status"),
             "rider_uuid": cls._rider_uuid(rider),
@@ -336,18 +375,36 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         for class_key, category_uuid in category_map.items():
             rows = await self.client.async_get_standings(season_uuid, category_uuid)
             result[class_key] = [
-                {
-                    "position": r.get("position"),
-                    "rider": (r.get("rider") or {}).get("full_name"),
-                    "number": (r.get("rider") or {}).get("number"),
-                    "team": (r.get("team") or {}).get("name"),
-                    "points": r.get("points"),
-                    "rider_uuid": self._rider_uuid(r.get("rider") or {}),
-                    "photo": None,
-                }
-                for r in rows[:TOP_N]
+                self._reduce_standings_row(r) for r in rows[:TOP_N]
             ]
         return result
+
+    @classmethod
+    def _reduce_standings_row(cls, r: dict[str, Any]) -> dict[str, Any]:
+        """Reduce one championship-standings row to the exposed fields.
+
+        ``photo`` is filled in later by :meth:`_attach_rider_photos`.
+        """
+        rider = r.get("rider") or {}
+        country = rider.get("country") or {}
+        return {
+            "position": r.get("position"),
+            "rider": rider.get("full_name"),
+            "number": rider.get("number"),
+            "country": country.get("name"),
+            "country_code": country.get("iso"),
+            "team": (r.get("team") or {}).get("name"),
+            "constructor": (r.get("constructor") or {}).get("name"),
+            "points": r.get("points"),
+            "position_change": r.get("position_change"),
+            "race_wins": r.get("race_wins"),
+            "podiums": r.get("podiums"),
+            "sprint_wins": r.get("sprint_wins"),
+            "sprint_podiums": r.get("sprint_podiums"),
+            "last_positions": r.get("last_positions"),
+            "rider_uuid": cls._rider_uuid(rider),
+            "photo": None,
+        }
 
     async def _fetch_latest_results(
         self, season_uuid: str, category_map: dict[str, str]
@@ -378,10 +435,14 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             )
             if not race_session:
                 continue
-            rows = await self.client.async_get_classification(race_session["id"])
+            payload = await self.client.async_get_classification(
+                race_session["id"]
+            )
+            rows = payload.get("classification") or []
             if not rows:
                 continue
             results = [self._reduce_classification_row(r) for r in rows]
+            records = self._reduce_records(payload.get("records") or [])
             return {
                 "event": (event.get("name") or "").strip(),
                 "date": event.get("date_end"),
@@ -389,5 +450,24 @@ class MotoGPDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 "weather": race_session.get("condition"),
                 "podium": results[:3],
                 "results": results,
+                "records": records,
             }
         return None
+
+    @staticmethod
+    def _reduce_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Reduce the session ``records`` block (fastest lap / pole / speed)."""
+        reduced: list[dict[str, Any]] = []
+        for rec in records:
+            rider = rec.get("rider") or {}
+            reduced.append(
+                {
+                    "type": rec.get("type"),
+                    "rider": rider.get("full_name"),
+                    "number": rider.get("number"),
+                    "time": (rec.get("bestLap") or {}).get("time"),
+                    "speed": rec.get("speed"),
+                    "is_new_record": rec.get("isNewRecord"),
+                }
+            )
+        return reduced

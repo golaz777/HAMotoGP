@@ -114,10 +114,15 @@ class MotoGPApiClient:
 
     async def async_get_classification(
         self, session_id: str
-    ) -> list[dict[str, Any]]:
-        """Return the classification rows for a session id."""
+    ) -> dict[str, Any]:
+        """Return the full classification payload for a session id.
+
+        The payload holds both ``classification`` (the per-rider result rows)
+        and ``records`` (fastest lap / pole / top-speed entries). Callers pick
+        whichever they need.
+        """
         path = EP_CLASSIFICATION.format(session_id=session_id)
         data = await self._get(path)
         if isinstance(data, dict):
-            return data.get("classification") or []
-        return []
+            return data
+        return {}

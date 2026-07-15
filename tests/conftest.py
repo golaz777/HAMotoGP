@@ -34,7 +34,7 @@ def mock_client() -> AsyncMock:
     standings = load_fixture("standings_mgp.json")["classification"]
     finished = load_fixture("finished_events.json")
     sessions = load_fixture("sessions.json")
-    classification = load_fixture("classification.json")["classification"]
+    classification = load_fixture("classification.json")
     riders = load_fixture("riders.json")
 
     client = AsyncMock()

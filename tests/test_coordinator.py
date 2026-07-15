@@ -98,6 +98,29 @@ def test_parse_circuit_defensive() -> None:
     assert blanks["corners"] is None
 
 
+async def test_next_event_race_info(hass: HomeAssistant, mock_client) -> None:
+    """next_event should expose race distance / lap counts per class."""
+    coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)
+    data = await coordinator._async_update_data()
+
+    race_info = data["next_event"]["race_info"]
+    assert isinstance(race_info, dict) and race_info
+    # Keyed by class acronym; each class has laps and distance.
+    some = next(iter(race_info.values()))
+    assert isinstance(some["num_laps"], int) and some["num_laps"] > 0
+    assert isinstance(some["distance_km"], float) and some["distance_km"] > 0
+
+
+async def test_sessions_carry_live_flags(hass: HomeAssistant, mock_client) -> None:
+    """Parsed sessions should carry lap count and live/on-demand flags."""
+    coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)
+    data = await coordinator._async_update_data()
+
+    sessions = data["next_event"]["sessions"]
+    assert sessions
+    assert all("has_live" in s and "has_on_demand" in s for s in sessions)
+
+
 async def test_standings_parsed_top_n(hass: HomeAssistant, mock_client) -> None:
     """Standings should be reduced to leader-first top rows."""
     coordinator = MotoGPDataUpdateCoordinator(hass, _make_entry(), mock_client)
@@ -111,6 +134,13 @@ async def test_standings_parsed_top_n(hass: HomeAssistant, mock_client) -> None:
     assert motogp[0]["number"] is not None
     # Jorge Martin (leader) has a portrait in the riders fixture.
     assert motogp[0]["photo"].startswith("https://photos.motogp.com/")
+    # Championship stats and nationality are surfaced.
+    leader = motogp[0]
+    assert leader["race_wins"] is not None
+    assert leader["podiums"] is not None
+    assert leader["country"]
+    assert "position_change" in leader
+    assert "last_positions" in leader
 
 
 async def test_latest_result_has_podium(hass: HomeAssistant, mock_client) -> None:
@@ -129,6 +159,15 @@ async def test_latest_result_has_podium(hass: HomeAssistant, mock_client) -> Non
     assert winner["status"]
     assert "gap" in winner
     assert winner["constructor"] is not None
+    # Nationality and laps-down are surfaced.
+    assert winner["country"]
+    assert "laps_down" in winner
+    assert winner["total_laps"] is not None
+    # Session records (fastest lap / pole) are reduced and exposed.
+    records = result["records"]
+    assert records and any(r["type"] == "poleLap" for r in records)
+    pole = next(r for r in records if r["type"] == "poleLap")
+    assert pole["rider"] and pole["time"]
     # Full field is exposed, not just the podium.
     assert len(result["results"]) > 3
     # Live weather from the race session.

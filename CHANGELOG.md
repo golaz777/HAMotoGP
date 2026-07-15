@@ -3,6 +3,23 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses semantic versioning.
 
+## [0.7.0] - 2026-07-15
+
+### Added
+- **Session-live binary sensor.** A new `binary_sensor.motogp_session_live` turns on while a
+  race-weekend session is running, computed from the session start/end windows (so it stays
+  accurate between refreshes). Attributes expose the live session and the next upcoming one.
+- **Fastest lap & pole.** The latest-result sensor now exposes a `records` list plus `pole` and
+  `fastest_lap` shortcuts (rider, time, speed, new-record flag) from the session classification.
+- **Championship stats.** Standings rows now carry `race_wins`, `podiums`, `sprint_wins`,
+  `sprint_podiums`, `position_change` and `last_positions`; the sensor adds `leader_wins` /
+  `leader_podiums`.
+- **Rider nationality.** Standings and result rows now include `country` / `country_code`.
+- **Richer result rows.** Result rows add `laps_down` and `total_laps`.
+- **Race info.** The next-event sensor exposes `race_info` per class (race/sprint lap counts and
+  distance in km/miles), and the schedule now includes per-session `num_laps` and live flags.
+- **Circuit extras.** Circuit info now includes `capacity` and `region`.
+
 ## [0.6.3] - 2026-07-15
 
 ### Changed

@@ -80,9 +80,13 @@ class MotoGPNextEventSensor(MotoGPEntity, SensorEntity):
                     "kind": s["kind"],
                     "start": s["start"],
                     "end": s["end"],
+                    "num_laps": s.get("num_laps"),
+                    "has_live": s.get("has_live"),
+                    "has_on_demand": s.get("has_on_demand"),
                 }
                 for s in event["sessions"]
             ],
+            "race_info": event.get("race_info"),
         }
 
 
@@ -121,6 +125,8 @@ class MotoGPStandingsSensor(MotoGPEntity, SensorEntity):
         return {
             "leader_points": leader["points"],
             "leader_team": leader["team"],
+            "leader_wins": leader.get("race_wins"),
+            "leader_podiums": leader.get("podiums"),
             "standings": rows,
         }
 
@@ -160,6 +166,7 @@ class MotoGPLatestResultSensor(MotoGPEntity, SensorEntity):
         result = self._result
         if not result:
             return None
+        records = result.get("records") or []
         return {
             "event": result["event"],
             "date": result["date"],
@@ -167,4 +174,9 @@ class MotoGPLatestResultSensor(MotoGPEntity, SensorEntity):
             "weather": result.get("weather"),
             "podium": result["podium"],
             "results": result.get("results", result["podium"]),
+            "records": records,
+            "pole": next((r for r in records if r["type"] == "poleLap"), None),
+            "fastest_lap": next(
+                (r for r in records if r["type"] == "fastestLap"), None
+            ),
         }
